@@ -39794,7 +39794,7 @@ const DATA = {
       "new_7d": 1,
       "days_in_submitted_90d": 1.9,
       "days_in_submitted_30d": 1.9,
-      "leader": null,
+      "leader": "Seth Davis",
       "active_by_stage": {
         "Recruiter Screen PDX": 5,
         "Submitted": 92
@@ -40873,7 +40873,7 @@ const NAMES=Object.keys(DATA.recruiters);
 const R=DATA.recruiters;
 const LEADERS=DATA.leaders||{list:[]};
 let ACTIVE_LEADERS=new Set(LEADERS.list);
-function activeNames(){return NAMES.filter(n=>ACTIVE_LEADERS.has(R[n].leader));}
+function activeNames(){return NAMES.filter(n=>!leaderFilterOn()||ACTIVE_LEADERS.has(R[n].leader));}
 function leaderFilterOn(){return ACTIVE_LEADERS.size<LEADERS.list.length;}
 function stageTotalsFor(names){
   const totals={};
