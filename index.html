@@ -616,13 +616,13 @@ details p{font-size:12.5px;color:var(--slate);margin:9px 0 0;line-height:1.55}
 <script>
 const DATA = {
   "meta": {
-    "generated": "2026-09-28T12:02:13.366824Z",
+    "generated": "2026-09-30T12:15:03.708331Z",
     "source": "Gem Pipeline Analytics and Metrics API, integrated with Workday",
-    "data_as_of": "2026-09-28T12:02:13Z",
+    "data_as_of": "2026-09-30T12:15:03Z",
     "req_load_filter": "primary recruiter on job, recruiters with 3 or more open reqs",
     "cohort_anchor": "All days-in-stage and time-to-offer figures anchored at the Submitted stage for both windows",
-    "schema_version": "78",
-    "schema_note": "v2 adds: per-recruiter hires_7d/30d/90d, evergreen_reqs, reqs_at_offer; live.open_reqs_by_job_profile; trailing.d7; trailing.sources_7d/90d and dispositions_7d/90d; time_to_offer_breakdown (recruiter/hiring_manager/cost_center/job_profile). v3 adds: per-recruiter unique_profiles, hm_count, closing_soon, new_7d, days_in_submitted_90d/30d \u2014 sourced live from Gem to restore the req-load detail table and per-recruiter days-in-stage table. v4: time_to_offer_breakdown recomputed for all four dimensions from the hired-only cohort (no more nulls/pending); added hires_by_source_7d/30d/90d. v5: reverted time-to-offer/hire to the verified apply-to-hire-minus-offer-dwell methodology for recruiter (matches prior validated pull); hiring_manager/cost_center/job_profile day figures reverted to pending pending a correct per-candidate pull; req load tiles restored to Unique reqs/Closing soon/Opened last 7d with real figures; Referral + Employee Referral combined in all source breakdowns. v6: added live.job_profile_recruiters, a full profile-to-recruiter lookup so the chat panel can name actual primary recruiters instead of only aggregate counts. v7: manual daily refresh (Tier A/B fields per the scheduled-task playbook), hired_cohort_90d and time_to_offer_breakdown left untouched. v8: added recruiters.*.leader and top-level leaders mapping (from Workday org chart) to support a global leader filter. v9: added recruiters.*.active_by_stage (open-job snapshot occupancy) and submitted_30d/90d, so In play and Submitted to hire can genuinely filter by leader instead of staying org-wide. v10: added recruiters.*.offers_30d so the Hires tile's offers subtext filters by leader instead of showing the org total. v11: added live.closing_soon_worklist and live.aging_past_90d_worklist (real req-level data) so tile numbers link to an actual worklist instead of just a count. v12: added trailing.kpi_history, a real accumulating snapshot log (append, never overwrite) so KPI sparklines can plot genuine history instead of a fabricated shape. Seeded with exactly one real point today; the sparkline UI shows a single dot until there are 2+ points. v13: second manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows), hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED (not overwritten). Worklists (closing_soon/aging_past_90d) not re-pulled this cycle, still reflect the prior refresh. v14: third manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Also flagging: opened_ts/time_open is confirmed unreliable for reopened requisitions (anchors to original open event, not most recent reopen) -- new_7d and any age-bucket figures should be read with that caveat until Gem's team confirms/fixes it. v15: re-pulled closing_soon_worklist and aging_past_90d_worklist for the first time since the initial build (Aug 6) -- both had gone stale, confirmed via a since-filled 'Application Support Engineer' req still showing on the old aging list. v16: fourth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists not re-pulled this cycle (already refreshed a few minutes prior). v17: fifth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v18: refreshed live.active_by_stage and per-recruiter active_by_stage (was stale since Aug 7), so In play tiles/charts reflect current snapshot occupancy. v19: added candidate_experience, ported from the weekly Paradox candidate experience & interview insights briefing (source data: Interviews Report and Candidate Surveys Report). Not independently recomputed from raw CSVs. v20: sixth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. Note: a new recruiter, Emily Braby (3 open reqs), appeared in Gem but is not yet in the tracked leader mapping -- excluded from recruiters dict this cycle pending a leader assignment. v21: seventh manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. Emily Braby (3 open reqs) still unassigned, still excluded from recruiters dict pending a leader. v22: added Emily Braby to recruiters (leader: Seth Davis, per direct confirmation). Only open_reqs (3), new_7d (1), and evergreen/closing/offers/hires (all 0 currently) are populated from this session's pulls -- the rest of her fields (screens, active_candidates, unique_profiles, hm_count, days_in_submitted, ttf) were never pulled and are null pending a fresh per-recruiter query that includes her explicitly. v23: eighth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Emily Braby now fully queried (leader Seth Davis, confirmed): open_reqs, evergreen, closing, new_7d, hires, screens, offers, unique_profiles (6), hm_count (4) all real. days_in_submitted genuinely null for her (no data yet, confirmed via ext_id, not a query gap). active_by_stage still not re-pulled this cycle for anyone. v24: refreshed live.active_by_stage + per-recruiter active_by_stage (Emily Braby now included, real data) and both worklists (closing_soon/aging_past_90d), all stale since around Aug 12. v25: candidate_experience refreshed directly from new raw CSVs (Interviews Report Aug 17, Candidate Surveys Jul19-Aug17) -- computed by Claude, not ported from a pre-built briefing this time. Methodology cross-checked against the prior validated report where windows overlap (several rates matched almost exactly). v26: ninth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Emily Braby's days_in_submitted still null (confirmed genuinely no data, not a query gap). Worklists and active_by_stage not re-pulled this cycle. v27: tenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Emily Braby now has real days_in_submitted (0.9d) and her first Recruiter Screen entries -- both null->real for the first time. Worklists and active_by_stage not re-pulled this cycle. v28: eleventh manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v29: twelfth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched (last real validation: cohort-count method confirmed accurate vs Workday 90d export within ~2%; day-figure itself not re-validated, spot-check sample too thin/noisy). kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v30: thirteenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v31: added live.open_reqs_by_job_profile_recruiter and live.open_reqs_by_category_recruiter (real, per-recruiter breakdowns) so the 'Open reqs by job profile', 'Open reqs by category', and 'Load distribution' charts can filter by the Leader selector instead of staying permanently org-wide. Also added a Screen to Hire % column concept to the Sources table spec (computed client-side from existing hires/screens columns, no new data needed for that part). v32: fourteenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v33: candidate_experience refreshed from new raw CSVs (Interviews Report Aug 24, Candidate Surveys Jul26-Aug24) -- computed by Claude directly, same methodology as the prior CSV-based refresh. No no-show complaints this window (was a repeat theme in the two prior cycles). v34: fifteenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v35: refreshed live.active_by_stage + per-recruiter active_by_stage (was stale since Aug 17). Emily Braby now shows real stage occupancy (9 Recruiter Screen, 1 Round 2, 762 Submitted) for the first time. v36: added trailing.workday_q4_ttf_median -- real Workday Q4 time-to-fill, cross-matched against actual hire records for verified per-cell fill counts, median only, min 5 fills. Separate from and not reconciled with the Gem-derived hired_cohort_90d/breakdown figures. v37: sixteenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v38: seventeenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v39: eighteenth manual refresh, Tier A/B fields AND active_by_stage (org-wide + per-recruiter, was stale since Aug 26). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists not re-pulled this cycle. v40: nineteenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v41: candidate_experience refreshed from new raw CSVs (Interviews Report Aug 31, Candidate Surveys Aug2-Aug31) -- computed by Claude directly, same methodology as the last two CSV-based refreshes. No no-show complaints this window, second straight clean period. New watchout: a real compensation-range mismatch surfaced in a cancellation verbatim. v42: added trailing.q4_days_per_stage -- real Workday Q4 average-days-per-stage, weighted by candidate volume, 26 recruiters matched to current roster. New card added to Recruiters tab, below the existing recruiter table/charts. v43: twentieth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v44: twenty-first manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v45: added trailing.paradox_round_usage -- real Gem stage-entry data on Round-level Paradox usage by recruiter. Screen 1-level Paradox usage explicitly NOT trackable yet; a prior attempt to infer it from the Paradox export's Scheduled By field was confirmed wrong (gave false positives/negatives, e.g. incorrectly showed Zimri Gamble using Paradox) and was discarded, not used. v46: twenty-second manual refresh. Gem now splits Recruiter Screen into manual vs. PDX (Paradox) sub-stages -- main dashboard combines them back into one 'Screen' figure everywhere per user instruction, but a new trailing.paradox_screen_usage dataset captures the real per-recruiter split for the Recruiters tab. Tier A/B fields otherwise refreshed as usual; hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v47: twenty-third manual refresh, Tier A/B fields plus refreshed paradox_screen_usage and paradox_round_usage datasets. Both Paradox cards now note that they only count Workday-integrated PDX stages -- browser-extension scheduling outside that flow shows as manual. hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v48: candidate_experience refreshed from new raw CSVs (Interviews Report Sep 7, Candidate Surveys Aug9-Sep7) -- computed by Claude directly, same methodology as prior CSV-based refreshes. No-show reports returned this window after two clean cycles. New watchout: a candidate cited heavy AI/automation use in hiring as a factor that hurt their impression of the company. v49: twenty-fourth manual refresh, Tier A/B fields plus refreshed paradox_screen_usage and paradox_round_usage. hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. Notable: 94 new job openings this week have no primary recruiter assigned yet -- flagged separately, not folded into new_7d_total. v50: twenty-fifth manual refresh. Tier A/B fields, plus full active_by_stage refresh (was stale) and a new live.candidates_past_submitted_total + per-recruiter recruiters[*].candidates_past_submitted -- current active-pipeline candidates beyond the Submitted stage. hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists not re-pulled this cycle. v51: twenty-sixth manual refresh. Tier A/B fields, refreshed active_by_stage and candidates_past_submitted, and refreshed both Paradox windowed datasets (30d/90d). New recruiter added to roster: Melissa LeVitre (2 open reqs, active pipeline). Several other new names appeared with minimal Submitted-stage activity (Caroline Winegar-Le, Devin Hughes, Jordan Berger, Chad Westenberg) -- not yet added as tracked recruiters pending more activity/confirmation. hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists not re-pulled this cycle. v52: added trailing.workday_time_to_offer -- real Workday time-to-offer data, 296 individual hire records (Nov 2025-Jun 2026), sortable by recruiter/hiring manager/cost center. Supplements (does not replace) existing Gem-derived fields. Flagged separately: time_to_offer_mean_days/median_days in trailing d30/d90 have never actually been recomputed from a real Gem query across this whole session -- they are stale placeholder values, a distinct issue from this new dataset. v53: restructured workday_time_to_offer to add by_hiring_manager and by_cost_center groupings (208 HMs, 71 cost centers), matching the existing Breakdown card's filter pattern. User will switch to a weekly Friday FY-to-date pull (starting July 1) going forward instead of one-off historical extracts. v54: workday_time_to_offer fully replaced with a longer extract (Apr 2025-Sep 2026, 389 hires vs prior 296). Chad Westenberg appeared with 5 real historical hires (Sep-Dec 2025 only, nothing in 2026) -- likely a former/reassigned recruiter, same pattern as Ashley Archibald/Heidi Montierth, not added to active roster. v55: workday_time_to_offer merged with supplementary pull for Zimri Gamble/Miguel Luna/Mallory Loken (554 hires total now). Lee Threatt still entirely missing, Haley Stromness shows zero hires -- both flagged to the user, unresolved. v56: workday_time_to_offer complete -- merged with final supplementary pull for Lee Threatt/Haley Stromness (658 hires total). All active recruiters now represented; no known gaps remain. v57: twenty-seventh manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets. Header tile (hired_cohort_90d 47d/52d) intentionally NOT touched -- user is sending real FY25 Time to Offer AND Time to Hire reports separately to make the header accurate. hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. v58: workday_time_to_offer fully replaced with the correct, complete FY25-to-date extract (Jul 2025-Aug 2026, 1750 hires, filtered to exclude Apr-Jun 2025 per user instruction). Header tile (hired_cohort_90d) NOW UPDATED: to_offer_days_mean real (41.5, was stale 47), new to_offer_days_median (34.5) added as the primary header number given real outliers. to_hire_days_mean (52) explicitly still NOT real, flagged in to_hire_note pending a separate Time to Hire report. v59: added trailing.workday_time_to_hire -- real Workday Total Days to Hire data (2,295 filled reqs, Jul 2025-Sep 2026). Header tile's Time to Hire number is NOW REAL: to_hire_days_median (20.2) is primary, to_hire_days_mean (28.0) secondary. Removed the old to_hire_note caveat since this is no longer a placeholder. v60: twenty-eighth manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets. Workday Time to Offer/Time to Hire datasets and header NOT touched this cycle (separate Workday-sourced data, not part of this Gem refresh). hired_cohort_90d.to_offer_days_mean/median and to_hire_days_mean untouched. kpi_history APPENDED. v61: twenty-ninth manual refresh. MAJOR ANOMALY FLAGGED: org-wide open_reqs dropped 427->356 in one day, active_by_stage dropped broadly across nearly every stage (Hired 141->67, Submitted 32543->29272), and Melissa LeVitre's Submitted count jumped 184->2437 (13x) while Kori Cude's dropped 287->50 with zero Recruiter Screen/Hired activity -- looks like a real reassignment or org event, flagged to user rather than silently loaded. Workday Time to Offer/Time to Hire and header NOT touched this cycle. v62: thirtieth manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets. Workday Time to Offer/Time to Hire and header NOT touched this cycle. kpi_history APPENDED. v63: added weighted org-wide Paradox adoption rates (Screen and Round, each 30d/90d) as headline stats on both cards, and started tracking in kpi_history going forward. v64: candidate_experience was found MISSING from data.json (dropped during an earlier full-file rewrite, likely broken/blank on the Candidate Experience card for several cycles) -- restored and refreshed from new raw CSVs (Interviews Report Sep 14, Candidate Surveys Aug16-Sep14). Recurring watchouts: no-show report, post-rejection feedback gap, compensation transparency. New: duplicate-invite scheduler glitch, Sage-as-scam concern. v64: candidate_experience was found MISSING from data.json (dropped during an earlier full-file rewrite -- card was likely blank for several cycles). Fully restored with the rich schema the card expects (pipeline, weekly, format_mix, round_mix, velocity, cancellations, voice, watchouts), computed directly from new raw CSVs (Interviews Report Sep 14, Candidate Surveys Aug16-Sep14). Recurring watchouts: no-show, AI/automation+remote-flexibility (2nd cycle, same candidate theme), compensation transparency, post-rejection feedback gap. New: rigid interview-time-assignment complaint. v65: thirty-first manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed the weighted adoption_rate fields (added last cycle). Workday Time to Offer/Time to Hire and header NOT touched this cycle. kpi_history APPENDED. v66: fixed Format Mix -- found a real data quality issue (Interview Type Text defaults to in-person for Screen 1/Additional Interview rounds regardless of true format; confirmed by user that on-site is under 1% org-wide). Rebuilt from a deduplicated combination of two interview report extracts (Sep 14 + May28-Jul31, 6502 distinct interviews by Interview ID). Format Mix now has 30d/90d rolling views plus an all-time view (covered_through 2026-09-11 -- future extracts should specify their date range so only genuinely new records get added to all_time). v67: truncated candidate_experience.weekly to Jul06-Sep07 (10 weeks) -- dropped Jun15/22/29 and Sep14, which showed artificially low volume as report-window-edge artifacts, not real activity dips. v68: thirty-second manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v69: thirty-third manual refresh -- FIRST cycle using Gem's corrected opened_ts field (now reflects Req Recruiting Start Date per Gem's fix, confirmed live). new_7d and open_reqs should now be more accurate than all prior refreshes this session. Also noticed a new name (September Buttorff, 1 open req) -- not yet added to tracked roster. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v70: refreshed candidate_experience from new raw CSVs (Interviews Report Sep 21, Candidate Surveys Aug23-Sep21). Weekly truncated to Jul06-Sep14 (dropped incomplete trailing Sep21 week). Format mix 30d/90d refreshed; all_time held pending next full dedup pass. Notable: same AI/automation+remote-flexibility complaint recurred a 3rd consecutive cycle. New: a pay-driven cancellation with a process-sequencing note (pay discussed late in process). v71: thirty-fourth manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. September Buttorff added to tracked roster (confirmed team member, 1 open req, minimal volume so far). Workday Time to Offer/Time to Hire and header NOT touched this cycle. kpi_history APPENDED. v72: thirty-fifth manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v73: thirty-sixth manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v75: thirty-eighth manual refresh, first cycle on the new GitHub+Cloudflare production pipeline (Lovable also updated in parallel this cycle). Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v76: thirty-ninth manual refresh, GitHub+Cloudflare Worker pipeline (root domain + www redirect both live). Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v77: fortieth manual refresh (Sep 28), GitHub+Cloudflare Worker pipeline. Tier A/B fields, active_by_stage/candidates_past_submitted, both Paradox windowed datasets and adoption_rate refreshed. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched. kpi_history appended. v78: candidate_experience refreshed from Interviews Report Sep 28 and Candidate Surveys (Aug 30-Sep 28). Weekly truncated Jul 06-Sep 21. all_time format mix extended through Sep 27 only."
+    "schema_version": "79",
+    "schema_note": "v2 adds: per-recruiter hires_7d/30d/90d, evergreen_reqs, reqs_at_offer; live.open_reqs_by_job_profile; trailing.d7; trailing.sources_7d/90d and dispositions_7d/90d; time_to_offer_breakdown (recruiter/hiring_manager/cost_center/job_profile). v3 adds: per-recruiter unique_profiles, hm_count, closing_soon, new_7d, days_in_submitted_90d/30d \u2014 sourced live from Gem to restore the req-load detail table and per-recruiter days-in-stage table. v4: time_to_offer_breakdown recomputed for all four dimensions from the hired-only cohort (no more nulls/pending); added hires_by_source_7d/30d/90d. v5: reverted time-to-offer/hire to the verified apply-to-hire-minus-offer-dwell methodology for recruiter (matches prior validated pull); hiring_manager/cost_center/job_profile day figures reverted to pending pending a correct per-candidate pull; req load tiles restored to Unique reqs/Closing soon/Opened last 7d with real figures; Referral + Employee Referral combined in all source breakdowns. v6: added live.job_profile_recruiters, a full profile-to-recruiter lookup so the chat panel can name actual primary recruiters instead of only aggregate counts. v7: manual daily refresh (Tier A/B fields per the scheduled-task playbook), hired_cohort_90d and time_to_offer_breakdown left untouched. v8: added recruiters.*.leader and top-level leaders mapping (from Workday org chart) to support a global leader filter. v9: added recruiters.*.active_by_stage (open-job snapshot occupancy) and submitted_30d/90d, so In play and Submitted to hire can genuinely filter by leader instead of staying org-wide. v10: added recruiters.*.offers_30d so the Hires tile's offers subtext filters by leader instead of showing the org total. v11: added live.closing_soon_worklist and live.aging_past_90d_worklist (real req-level data) so tile numbers link to an actual worklist instead of just a count. v12: added trailing.kpi_history, a real accumulating snapshot log (append, never overwrite) so KPI sparklines can plot genuine history instead of a fabricated shape. Seeded with exactly one real point today; the sparkline UI shows a single dot until there are 2+ points. v13: second manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows), hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED (not overwritten). Worklists (closing_soon/aging_past_90d) not re-pulled this cycle, still reflect the prior refresh. v14: third manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Also flagging: opened_ts/time_open is confirmed unreliable for reopened requisitions (anchors to original open event, not most recent reopen) -- new_7d and any age-bucket figures should be read with that caveat until Gem's team confirms/fixes it. v15: re-pulled closing_soon_worklist and aging_past_90d_worklist for the first time since the initial build (Aug 6) -- both had gone stale, confirmed via a since-filled 'Application Support Engineer' req still showing on the old aging list. v16: fourth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists not re-pulled this cycle (already refreshed a few minutes prior). v17: fifth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v18: refreshed live.active_by_stage and per-recruiter active_by_stage (was stale since Aug 7), so In play tiles/charts reflect current snapshot occupancy. v19: added candidate_experience, ported from the weekly Paradox candidate experience & interview insights briefing (source data: Interviews Report and Candidate Surveys Report). Not independently recomputed from raw CSVs. v20: sixth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. Note: a new recruiter, Emily Braby (3 open reqs), appeared in Gem but is not yet in the tracked leader mapping -- excluded from recruiters dict this cycle pending a leader assignment. v21: seventh manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. Emily Braby (3 open reqs) still unassigned, still excluded from recruiters dict pending a leader. v22: added Emily Braby to recruiters (leader: Seth Davis, per direct confirmation). Only open_reqs (3), new_7d (1), and evergreen/closing/offers/hires (all 0 currently) are populated from this session's pulls -- the rest of her fields (screens, active_candidates, unique_profiles, hm_count, days_in_submitted, ttf) were never pulled and are null pending a fresh per-recruiter query that includes her explicitly. v23: eighth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Emily Braby now fully queried (leader Seth Davis, confirmed): open_reqs, evergreen, closing, new_7d, hires, screens, offers, unique_profiles (6), hm_count (4) all real. days_in_submitted genuinely null for her (no data yet, confirmed via ext_id, not a query gap). active_by_stage still not re-pulled this cycle for anyone. v24: refreshed live.active_by_stage + per-recruiter active_by_stage (Emily Braby now included, real data) and both worklists (closing_soon/aging_past_90d), all stale since around Aug 12. v25: candidate_experience refreshed directly from new raw CSVs (Interviews Report Aug 17, Candidate Surveys Jul19-Aug17) -- computed by Claude, not ported from a pre-built briefing this time. Methodology cross-checked against the prior validated report where windows overlap (several rates matched almost exactly). v26: ninth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Emily Braby's days_in_submitted still null (confirmed genuinely no data, not a query gap). Worklists and active_by_stage not re-pulled this cycle. v27: tenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Emily Braby now has real days_in_submitted (0.9d) and her first Recruiter Screen entries -- both null->real for the first time. Worklists and active_by_stage not re-pulled this cycle. v28: eleventh manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v29: twelfth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched (last real validation: cohort-count method confirmed accurate vs Workday 90d export within ~2%; day-figure itself not re-validated, spot-check sample too thin/noisy). kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v30: thirteenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v31: added live.open_reqs_by_job_profile_recruiter and live.open_reqs_by_category_recruiter (real, per-recruiter breakdowns) so the 'Open reqs by job profile', 'Open reqs by category', and 'Load distribution' charts can filter by the Leader selector instead of staying permanently org-wide. Also added a Screen to Hire % column concept to the Sources table spec (computed client-side from existing hires/screens columns, no new data needed for that part). v32: fourteenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v33: candidate_experience refreshed from new raw CSVs (Interviews Report Aug 24, Candidate Surveys Jul26-Aug24) -- computed by Claude directly, same methodology as the prior CSV-based refresh. No no-show complaints this window (was a repeat theme in the two prior cycles). v34: fifteenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v35: refreshed live.active_by_stage + per-recruiter active_by_stage (was stale since Aug 17). Emily Braby now shows real stage occupancy (9 Recruiter Screen, 1 Round 2, 762 Submitted) for the first time. v36: added trailing.workday_q4_ttf_median -- real Workday Q4 time-to-fill, cross-matched against actual hire records for verified per-cell fill counts, median only, min 5 fills. Separate from and not reconciled with the Gem-derived hired_cohort_90d/breakdown figures. v37: sixteenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v38: seventeenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v39: eighteenth manual refresh, Tier A/B fields AND active_by_stage (org-wide + per-recruiter, was stale since Aug 26). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists not re-pulled this cycle. v40: nineteenth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v41: candidate_experience refreshed from new raw CSVs (Interviews Report Aug 31, Candidate Surveys Aug2-Aug31) -- computed by Claude directly, same methodology as the last two CSV-based refreshes. No no-show complaints this window, second straight clean period. New watchout: a real compensation-range mismatch surfaced in a cancellation verbatim. v42: added trailing.q4_days_per_stage -- real Workday Q4 average-days-per-stage, weighted by candidate volume, 26 recruiters matched to current roster. New card added to Recruiters tab, below the existing recruiter table/charts. v43: twentieth manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v44: twenty-first manual refresh, Tier A/B fields (recruiter loads, hires, sources, trailing windows). hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v45: added trailing.paradox_round_usage -- real Gem stage-entry data on Round-level Paradox usage by recruiter. Screen 1-level Paradox usage explicitly NOT trackable yet; a prior attempt to infer it from the Paradox export's Scheduled By field was confirmed wrong (gave false positives/negatives, e.g. incorrectly showed Zimri Gamble using Paradox) and was discarded, not used. v46: twenty-second manual refresh. Gem now splits Recruiter Screen into manual vs. PDX (Paradox) sub-stages -- main dashboard combines them back into one 'Screen' figure everywhere per user instruction, but a new trailing.paradox_screen_usage dataset captures the real per-recruiter split for the Recruiters tab. Tier A/B fields otherwise refreshed as usual; hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v47: twenty-third manual refresh, Tier A/B fields plus refreshed paradox_screen_usage and paradox_round_usage datasets. Both Paradox cards now note that they only count Workday-integrated PDX stages -- browser-extension scheduling outside that flow shows as manual. hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. v48: candidate_experience refreshed from new raw CSVs (Interviews Report Sep 7, Candidate Surveys Aug9-Sep7) -- computed by Claude directly, same methodology as prior CSV-based refreshes. No-show reports returned this window after two clean cycles. New watchout: a candidate cited heavy AI/automation use in hiring as a factor that hurt their impression of the company. v49: twenty-fourth manual refresh, Tier A/B fields plus refreshed paradox_screen_usage and paradox_round_usage. hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists and active_by_stage not re-pulled this cycle. Notable: 94 new job openings this week have no primary recruiter assigned yet -- flagged separately, not folded into new_7d_total. v50: twenty-fifth manual refresh. Tier A/B fields, plus full active_by_stage refresh (was stale) and a new live.candidates_past_submitted_total + per-recruiter recruiters[*].candidates_past_submitted -- current active-pipeline candidates beyond the Submitted stage. hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists not re-pulled this cycle. v51: twenty-sixth manual refresh. Tier A/B fields, refreshed active_by_stage and candidates_past_submitted, and refreshed both Paradox windowed datasets (30d/90d). New recruiter added to roster: Melissa LeVitre (2 open reqs, active pipeline). Several other new names appeared with minimal Submitted-stage activity (Caroline Winegar-Le, Devin Hughes, Jordan Berger, Chad Westenberg) -- not yet added as tracked recruiters pending more activity/confirmation. hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. Worklists not re-pulled this cycle. v52: added trailing.workday_time_to_offer -- real Workday time-to-offer data, 296 individual hire records (Nov 2025-Jun 2026), sortable by recruiter/hiring manager/cost center. Supplements (does not replace) existing Gem-derived fields. Flagged separately: time_to_offer_mean_days/median_days in trailing d30/d90 have never actually been recomputed from a real Gem query across this whole session -- they are stale placeholder values, a distinct issue from this new dataset. v53: restructured workday_time_to_offer to add by_hiring_manager and by_cost_center groupings (208 HMs, 71 cost centers), matching the existing Breakdown card's filter pattern. User will switch to a weekly Friday FY-to-date pull (starting July 1) going forward instead of one-off historical extracts. v54: workday_time_to_offer fully replaced with a longer extract (Apr 2025-Sep 2026, 389 hires vs prior 296). Chad Westenberg appeared with 5 real historical hires (Sep-Dec 2025 only, nothing in 2026) -- likely a former/reassigned recruiter, same pattern as Ashley Archibald/Heidi Montierth, not added to active roster. v55: workday_time_to_offer merged with supplementary pull for Zimri Gamble/Miguel Luna/Mallory Loken (554 hires total now). Lee Threatt still entirely missing, Haley Stromness shows zero hires -- both flagged to the user, unresolved. v56: workday_time_to_offer complete -- merged with final supplementary pull for Lee Threatt/Haley Stromness (658 hires total). All active recruiters now represented; no known gaps remain. v57: twenty-seventh manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets. Header tile (hired_cohort_90d 47d/52d) intentionally NOT touched -- user is sending real FY25 Time to Offer AND Time to Hire reports separately to make the header accurate. hired_cohort_90d and time_to_offer_breakdown untouched. kpi_history APPENDED. v58: workday_time_to_offer fully replaced with the correct, complete FY25-to-date extract (Jul 2025-Aug 2026, 1750 hires, filtered to exclude Apr-Jun 2025 per user instruction). Header tile (hired_cohort_90d) NOW UPDATED: to_offer_days_mean real (41.5, was stale 47), new to_offer_days_median (34.5) added as the primary header number given real outliers. to_hire_days_mean (52) explicitly still NOT real, flagged in to_hire_note pending a separate Time to Hire report. v59: added trailing.workday_time_to_hire -- real Workday Total Days to Hire data (2,295 filled reqs, Jul 2025-Sep 2026). Header tile's Time to Hire number is NOW REAL: to_hire_days_median (20.2) is primary, to_hire_days_mean (28.0) secondary. Removed the old to_hire_note caveat since this is no longer a placeholder. v60: twenty-eighth manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets. Workday Time to Offer/Time to Hire datasets and header NOT touched this cycle (separate Workday-sourced data, not part of this Gem refresh). hired_cohort_90d.to_offer_days_mean/median and to_hire_days_mean untouched. kpi_history APPENDED. v61: twenty-ninth manual refresh. MAJOR ANOMALY FLAGGED: org-wide open_reqs dropped 427->356 in one day, active_by_stage dropped broadly across nearly every stage (Hired 141->67, Submitted 32543->29272), and Melissa LeVitre's Submitted count jumped 184->2437 (13x) while Kori Cude's dropped 287->50 with zero Recruiter Screen/Hired activity -- looks like a real reassignment or org event, flagged to user rather than silently loaded. Workday Time to Offer/Time to Hire and header NOT touched this cycle. v62: thirtieth manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets. Workday Time to Offer/Time to Hire and header NOT touched this cycle. kpi_history APPENDED. v63: added weighted org-wide Paradox adoption rates (Screen and Round, each 30d/90d) as headline stats on both cards, and started tracking in kpi_history going forward. v64: candidate_experience was found MISSING from data.json (dropped during an earlier full-file rewrite, likely broken/blank on the Candidate Experience card for several cycles) -- restored and refreshed from new raw CSVs (Interviews Report Sep 14, Candidate Surveys Aug16-Sep14). Recurring watchouts: no-show report, post-rejection feedback gap, compensation transparency. New: duplicate-invite scheduler glitch, Sage-as-scam concern. v64: candidate_experience was found MISSING from data.json (dropped during an earlier full-file rewrite -- card was likely blank for several cycles). Fully restored with the rich schema the card expects (pipeline, weekly, format_mix, round_mix, velocity, cancellations, voice, watchouts), computed directly from new raw CSVs (Interviews Report Sep 14, Candidate Surveys Aug16-Sep14). Recurring watchouts: no-show, AI/automation+remote-flexibility (2nd cycle, same candidate theme), compensation transparency, post-rejection feedback gap. New: rigid interview-time-assignment complaint. v65: thirty-first manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed the weighted adoption_rate fields (added last cycle). Workday Time to Offer/Time to Hire and header NOT touched this cycle. kpi_history APPENDED. v66: fixed Format Mix -- found a real data quality issue (Interview Type Text defaults to in-person for Screen 1/Additional Interview rounds regardless of true format; confirmed by user that on-site is under 1% org-wide). Rebuilt from a deduplicated combination of two interview report extracts (Sep 14 + May28-Jul31, 6502 distinct interviews by Interview ID). Format Mix now has 30d/90d rolling views plus an all-time view (covered_through 2026-09-11 -- future extracts should specify their date range so only genuinely new records get added to all_time). v67: truncated candidate_experience.weekly to Jul06-Sep07 (10 weeks) -- dropped Jun15/22/29 and Sep14, which showed artificially low volume as report-window-edge artifacts, not real activity dips. v68: thirty-second manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v69: thirty-third manual refresh -- FIRST cycle using Gem's corrected opened_ts field (now reflects Req Recruiting Start Date per Gem's fix, confirmed live). new_7d and open_reqs should now be more accurate than all prior refreshes this session. Also noticed a new name (September Buttorff, 1 open req) -- not yet added to tracked roster. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v70: refreshed candidate_experience from new raw CSVs (Interviews Report Sep 21, Candidate Surveys Aug23-Sep21). Weekly truncated to Jul06-Sep14 (dropped incomplete trailing Sep21 week). Format mix 30d/90d refreshed; all_time held pending next full dedup pass. Notable: same AI/automation+remote-flexibility complaint recurred a 3rd consecutive cycle. New: a pay-driven cancellation with a process-sequencing note (pay discussed late in process). v71: thirty-fourth manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. September Buttorff added to tracked roster (confirmed team member, 1 open req, minimal volume so far). Workday Time to Offer/Time to Hire and header NOT touched this cycle. kpi_history APPENDED. v72: thirty-fifth manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v73: thirty-sixth manual refresh. Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v75: thirty-eighth manual refresh, first cycle on the new GitHub+Cloudflare production pipeline (Lovable also updated in parallel this cycle). Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v76: thirty-ninth manual refresh, GitHub+Cloudflare Worker pipeline (root domain + www redirect both live). Tier A/B fields, refreshed active_by_stage/candidates_past_submitted, refreshed both Paradox windowed datasets and recomputed adoption_rate. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched this cycle. kpi_history APPENDED. v77: fortieth manual refresh (Sep 28), GitHub+Cloudflare Worker pipeline. Tier A/B fields, active_by_stage/candidates_past_submitted, both Paradox windowed datasets and adoption_rate refreshed. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched. kpi_history appended. v78: candidate_experience refreshed from Interviews Report Sep 28 and Candidate Surveys (Aug 30-Sep 28). Weekly truncated Jul 06-Sep 21. all_time format mix extended through Sep 27 only. v79: forty-first manual refresh (Sep 30), GitHub+Cloudflare Worker pipeline. Tier A/B fields, active_by_stage/candidates_past_submitted, both Paradox windowed datasets and adoption_rate refreshed. Workday Time to Offer/Time to Hire, header, and candidate_experience NOT touched. kpi_history appended."
   },
   "live": {
     "open_reqs_shown": 369,
@@ -639,14 +639,14 @@ const DATA = {
     "avg_time_open_standard_days": 744.2,
     "avg_time_open_evergreen_days": 168.3,
     "active_by_stage": {
-      "Hired": 78,
-      "Interview": 376,
-      "Recruiter Screen": 990,
-      "Round 1 PDX": 352,
-      "Round 2 PDX": 122,
-      "Round 3 PDX": 32,
-      "Submitted": 31162,
-      "Offer": 44
+      "Hired": 64,
+      "Interview": 391,
+      "Recruiter Screen": 1008,
+      "Round 1 PDX": 359,
+      "Round 2 PDX": 114,
+      "Round 3 PDX": 35,
+      "Submitted": 30516,
+      "Offer": 42
     },
     "open_reqs_by_category": {
       "Professional": 115,
@@ -967,9 +967,9 @@ const DATA = {
     },
     "unique_reqs": 165,
     "repeat_postings": 195,
-    "open_reqs_org_total": 386,
-    "closing_soon_total": 58,
-    "new_7d_total": 45,
+    "open_reqs_org_total": 367,
+    "closing_soon_total": 54,
+    "new_7d_total": 43,
     "new_7d_recruiter_count": 18,
     "job_profile_recruiters": {
       "note": "Org-wide, every open requisition's primary recruiter, grouped by Workday job profile. Covers all distinct profiles, including single-req ones.",
@@ -4630,26 +4630,26 @@ const DATA = {
   "trailing": {
     "d30": {
       "stage_entries": {
-        "Submitted": 27634,
-        "Recruiter Screen": 1115,
-        "Interview": 255,
-        "Round 1 PDX": 355,
-        "Round 2 PDX": 120,
-        "Round 3 PDX": 26,
-        "Offer": 123,
-        "Hired": 145
+        "Submitted": 28580,
+        "Recruiter Screen": 1262,
+        "Interview": 295,
+        "Round 1 PDX": 390,
+        "Round 2 PDX": 126,
+        "Round 3 PDX": 31,
+        "Offer": 139,
+        "Hired": 158
       },
       "passthrough": {
-        "screen_to_interview": 0.2287,
+        "screen_to_interview": 0.2338,
         "interview_to_r1": null,
-        "r1_to_r2": 0.338,
-        "r2_to_r3": 0.2167,
+        "r1_to_r2": 0.3231,
+        "r2_to_r3": 0.246,
         "r3_to_offer": null,
         "offer_to_hire": null
       },
-      "screen_to_hire": 0.13,
+      "screen_to_hire": 0.125,
       "days_in_stage": {
-        "Submitted": 3.9,
+        "Submitted": 4.5,
         "Recruiter Screen": 1.9,
         "Interview": 0.2,
         "Round 1 PDX": 3.0,
@@ -4662,24 +4662,24 @@ const DATA = {
     },
     "d90": {
       "stage_entries": {
-        "Submitted": 69085,
-        "Recruiter Screen": 3300,
-        "Interview": 880,
-        "Round 1 PDX": 986,
-        "Round 2 PDX": 364,
-        "Round 3 PDX": 81,
-        "Offer": 500,
-        "Hired": 456
+        "Submitted": 69368,
+        "Recruiter Screen": 3333,
+        "Interview": 881,
+        "Round 1 PDX": 994,
+        "Round 2 PDX": 363,
+        "Round 3 PDX": 82,
+        "Offer": 493,
+        "Hired": 452
       },
       "passthrough": {
-        "screen_to_interview": 0.2667,
+        "screen_to_interview": 0.2643,
         "interview_to_r1": null,
-        "r1_to_r2": 0.3692,
-        "r2_to_r3": 0.2225,
+        "r1_to_r2": 0.3652,
+        "r2_to_r3": 0.2259,
         "r3_to_offer": null,
-        "offer_to_hire": 0.912
+        "offer_to_hire": 0.9168
       },
-      "screen_to_hire": 0.138,
+      "screen_to_hire": 0.136,
       "days_in_stage": {
         "Submitted": 7.1,
         "Recruiter Screen": 2.4,
@@ -4759,31 +4759,31 @@ const DATA = {
     "sources_30d": {
       "Job Fair": 1,
       "Handshake": 9,
-      "HigherEdJobs": 30,
-      "Other": 50,
-      "CareerBuilder": 6,
-      "WGU Website": 127,
+      "HigherEdJobs": 31,
+      "Other": 53,
+      "CareerBuilder": 9,
+      "WGU Website": 138,
       "Diversity Jobs": 3,
       "WGU Alumni": 19,
-      "Indeed": 61,
-      "LinkedIn": 384,
+      "Indeed": 70,
+      "LinkedIn": 422,
       "Facebook": 4,
-      "Existing Employee": 246,
-      "Student Referral": 2,
+      "Existing Employee": 302,
+      "Student Referral": 1,
       "Inside Higher Ed": 1,
       "Dice.com": 4,
-      "Glassdoor": 10,
+      "Glassdoor": 13,
       "(none)": 1,
       "Networking Event": 1,
       "Social Share: Email": 1,
       "Social Share: Recruiting Landing Pages": 1,
       "Social Share: Job Alert": 1,
-      "Referral": 153
+      "Referral": 177
     },
     "dispositions_30d": {
-      "none": 827,
-      "rejected": 260,
-      "dropped_out": 28
+      "none": 914,
+      "rejected": 317,
+      "dropped_out": 31
     },
     "interviews_since_jul1": {
       "total": 511,
@@ -4798,20 +4798,20 @@ const DATA = {
     },
     "d7": {
       "stage_entries": {
-        "Submitted": 6206,
-        "Recruiter Screen": 234,
-        "Interview": 70,
-        "Round 1 PDX": 83,
-        "Round 2 PDX": 56,
-        "Round 3 PDX": 7,
-        "Offer": 36,
-        "Hired": 23
+        "Submitted": 6006,
+        "Recruiter Screen": 276,
+        "Interview": 85,
+        "Round 1 PDX": 72,
+        "Round 2 PDX": 41,
+        "Round 3 PDX": 11,
+        "Offer": 40,
+        "Hired": 30
       },
       "passthrough": {
-        "screen_to_interview": 0.2991,
-        "interview_to_r1": null,
-        "r1_to_r2": 0.6747,
-        "r2_to_r3": 0.125,
+        "screen_to_interview": 0.308,
+        "interview_to_r1": 0.8471,
+        "r1_to_r2": 0.5694,
+        "r2_to_r3": 0.2683,
         "r3_to_offer": null,
         "offer_to_hire": null
       },
@@ -4830,53 +4830,52 @@ const DATA = {
       "caveat": "7 day cohort is too small and too immature for a screen-to-hire rate or time-to-offer figure; most candidates who will convert haven't had time to yet. Use for stage-entry volume and days-in-stage only."
     },
     "sources_7d": {
-      "HigherEdJobs": 12,
-      "Other": 7,
-      "WGU Website": 33,
-      "WGU Alumni": 6,
-      "Indeed": 20,
-      "LinkedIn": 72,
-      "Existing Employee": 51,
-      "(none)": 1,
-      "CareerBuilder": 1,
-      "Glassdoor": 1,
-      "Referral": 30
+      "Other": 10,
+      "CareerBuilder": 4,
+      "WGU Website": 32,
+      "WGU Alumni": 2,
+      "Indeed": 18,
+      "LinkedIn": 82,
+      "Existing Employee": 79,
+      "HigherEdJobs": 7,
+      "Glassdoor": 4,
+      "Referral": 38
     },
     "sources_90d": {
       "Job Fair": 1,
-      "Handshake": 28,
+      "Handshake": 27,
       "Networking Event": 2,
       "Gem": 1,
-      "HigherEdJobs": 92,
-      "Other": 155,
-      "CareerBuilder": 19,
-      "WGU Website": 321,
+      "HigherEdJobs": 84,
+      "Other": 156,
+      "CareerBuilder": 21,
+      "WGU Website": 320,
       "Diversity Jobs": 10,
       "WGU Alumni": 70,
-      "Indeed": 181,
+      "Indeed": 182,
       "Social Share: Email": 3,
-      "LinkedIn": 1119,
+      "LinkedIn": 1120,
       "Facebook": 7,
-      "Existing Employee": 734,
+      "Existing Employee": 766,
       "Student Referral": 7,
       "Inside Higher Ed": 3,
-      "Dice.com": 14,
+      "Dice.com": 11,
       "Social Share: Recruiting Landing Pages": 4,
-      "Glassdoor": 33,
+      "Glassdoor": 36,
       "(none)": 4,
       "Social Share: Job Alert": 4,
       "Paradox": 1,
-      "Referral": 487
+      "Referral": 493
     },
     "dispositions_7d": {
-      "none": 221,
+      "none": 263,
       "rejected": 12,
       "dropped_out": 1
     },
     "dispositions_90d": {
-      "none": 1391,
-      "rejected": 1751,
-      "dropped_out": 158
+      "none": 1437,
+      "rejected": 1741,
+      "dropped_out": 155
     },
     "hired_cohort_90d": {
       "note": "Both figures use the hired cohort only, application to hire minus days at Offer. n=344 hired within 90d org-wide (25 recruiters shown here have a hire; total org hires 90d differs, see trailing.d90.stage_entries.Hired for the full count including reqs outside this recruiter set).",
@@ -4895,9 +4894,11 @@ const DATA = {
     "hires_by_source_7d": {
       "Job Fair": 1,
       "WGU Website": 1,
+      "Diversity Jobs": 1,
       "WGU Alumni": 1,
-      "LinkedIn": 7,
-      "Existing Employee": 10,
+      "Indeed": 1,
+      "LinkedIn": 9,
+      "Existing Employee": 13,
       "Referral": 3
     },
     "hires_by_source_30d": {
@@ -4906,13 +4907,13 @@ const DATA = {
       "HigherEdJobs": 1,
       "Other": 3,
       "CareerBuilder": 1,
-      "WGU Website": 5,
+      "WGU Website": 6,
       "Diversity Jobs": 1,
       "WGU Alumni": 2,
-      "Indeed": 3,
-      "LinkedIn": 26,
-      "Existing Employee": 71,
-      "Referral": 22
+      "Indeed": 4,
+      "LinkedIn": 28,
+      "Existing Employee": 78,
+      "Referral": 24
     },
     "hires_by_source_90d": {
       "Job Fair": 1,
@@ -4920,19 +4921,19 @@ const DATA = {
       "HigherEdJobs": 7,
       "Other": 15,
       "CareerBuilder": 3,
-      "WGU Website": 40,
+      "WGU Website": 39,
       "Diversity Jobs": 1,
       "WGU Alumni": 6,
-      "Indeed": 10,
+      "Indeed": 11,
       "Social Share: Email": 1,
-      "LinkedIn": 108,
+      "LinkedIn": 107,
       "Facebook": 3,
-      "Existing Employee": 150,
+      "Existing Employee": 145,
       "Student Referral": 2,
       "Inside Higher Ed": 1,
       "Glassdoor": 2,
       "(none)": 2,
-      "Referral": 76
+      "Referral": 78
     },
     "kpi_history": [
       {
@@ -5266,6 +5267,18 @@ const DATA = {
         "pdx_adoption_screen_90d": 53.5,
         "pdx_adoption_round_30d": 66.3,
         "pdx_adoption_round_90d": 61.9
+      },
+      {
+        "date": "2026-09-30",
+        "open_reqs": 363,
+        "in_play": 2013,
+        "screen_to_hire_30d": 0.125,
+        "hires_30d": 156,
+        "closing_soon_total": 54,
+        "pdx_adoption_screen_30d": 60.1,
+        "pdx_adoption_screen_90d": 55.3,
+        "pdx_adoption_round_30d": 65.0,
+        "pdx_adoption_round_90d": 62.0
       }
     ],
     "workday_q4_ttf_median": {
@@ -5774,15 +5787,15 @@ const DATA = {
             {
               "recruiter": "Amy Simon",
               "interview_manual": 0,
-              "pdx_rounds": 47,
-              "total": 47,
+              "pdx_rounds": 52,
+              "total": 52,
               "pct_via_paradox": 100.0
             },
             {
-              "recruiter": "Brad Chatwin",
+              "recruiter": "September Buttorff",
               "interview_manual": 0,
-              "pdx_rounds": 11,
-              "total": 11,
+              "pdx_rounds": 8,
+              "total": 8,
               "pct_via_paradox": 100.0
             },
             {
@@ -5795,51 +5808,65 @@ const DATA = {
             {
               "recruiter": "Melissa LeVitre",
               "interview_manual": 1,
-              "pdx_rounds": 59,
-              "total": 60,
-              "pct_via_paradox": 98.3
-            },
-            {
-              "recruiter": "Vidhi Bhadiyadra",
-              "interview_manual": 1,
-              "pdx_rounds": 35,
-              "total": 36,
-              "pct_via_paradox": 97.2
+              "pdx_rounds": 67,
+              "total": 68,
+              "pct_via_paradox": 98.5
             },
             {
               "recruiter": "Tyler Kulbacki",
-              "interview_manual": 2,
-              "pdx_rounds": 53,
-              "total": 55,
-              "pct_via_paradox": 96.4
+              "interview_manual": 3,
+              "pdx_rounds": 54,
+              "total": 57,
+              "pct_via_paradox": 94.7
             },
             {
-              "recruiter": "Emily Braby",
-              "interview_manual": 7,
-              "pdx_rounds": 50,
-              "total": 57,
-              "pct_via_paradox": 87.7
+              "recruiter": "Vidhi Bhadiyadra",
+              "interview_manual": 3,
+              "pdx_rounds": 39,
+              "total": 42,
+              "pct_via_paradox": 92.9
+            },
+            {
+              "recruiter": "Brad Chatwin",
+              "interview_manual": 1,
+              "pdx_rounds": 11,
+              "total": 12,
+              "pct_via_paradox": 91.7
             },
             {
               "recruiter": "Garrett Bunyak",
               "interview_manual": 4,
-              "pdx_rounds": 27,
-              "total": 31,
-              "pct_via_paradox": 87.1
+              "pdx_rounds": 30,
+              "total": 34,
+              "pct_via_paradox": 88.2
+            },
+            {
+              "recruiter": "Emily Braby",
+              "interview_manual": 8,
+              "pdx_rounds": 51,
+              "total": 59,
+              "pct_via_paradox": 86.4
             },
             {
               "recruiter": "Ann Webb",
-              "interview_manual": 9,
-              "pdx_rounds": 34,
-              "total": 43,
-              "pct_via_paradox": 79.1
+              "interview_manual": 10,
+              "pdx_rounds": 37,
+              "total": 47,
+              "pct_via_paradox": 78.7
             },
             {
               "recruiter": "Christina Moubarak",
-              "interview_manual": 14,
-              "pdx_rounds": 51,
-              "total": 65,
-              "pct_via_paradox": 78.5
+              "interview_manual": 16,
+              "pdx_rounds": 54,
+              "total": 70,
+              "pct_via_paradox": 77.1
+            },
+            {
+              "recruiter": "Haley Stromness",
+              "interview_manual": 16,
+              "pdx_rounds": 50,
+              "total": 66,
+              "pct_via_paradox": 75.8
             },
             {
               "recruiter": "Alexia Lambson",
@@ -5849,25 +5876,18 @@ const DATA = {
               "pct_via_paradox": 73.1
             },
             {
-              "recruiter": "Lauren Rovis",
-              "interview_manual": 3,
-              "pdx_rounds": 8,
-              "total": 11,
-              "pct_via_paradox": 72.7
-            },
-            {
-              "recruiter": "Haley Stromness",
-              "interview_manual": 17,
-              "pdx_rounds": 42,
-              "total": 59,
-              "pct_via_paradox": 71.2
-            },
-            {
               "recruiter": "Tyson Green",
               "interview_manual": 6,
-              "pdx_rounds": 10,
-              "total": 16,
-              "pct_via_paradox": 62.5
+              "pdx_rounds": 12,
+              "total": 18,
+              "pct_via_paradox": 66.7
+            },
+            {
+              "recruiter": "Tasha Turner",
+              "interview_manual": 15,
+              "pdx_rounds": 21,
+              "total": 36,
+              "pct_via_paradox": 58.3
             },
             {
               "recruiter": "Jennie Barron",
@@ -5877,18 +5897,18 @@ const DATA = {
               "pct_via_paradox": 55.6
             },
             {
-              "recruiter": "Tasha Turner",
-              "interview_manual": 15,
-              "pdx_rounds": 15,
-              "total": 30,
-              "pct_via_paradox": 50.0
-            },
-            {
               "recruiter": "Brittney Stewart",
               "interview_manual": 21,
               "pdx_rounds": 17,
               "total": 38,
               "pct_via_paradox": 44.7
+            },
+            {
+              "recruiter": "Lauren Rovis",
+              "interview_manual": 3,
+              "pdx_rounds": 2,
+              "total": 5,
+              "pct_via_paradox": 40.0
             },
             {
               "recruiter": "Stephanie Anderson",
@@ -5899,30 +5919,30 @@ const DATA = {
             },
             {
               "recruiter": "Tamika Allen",
-              "interview_manual": 29,
+              "interview_manual": 40,
               "pdx_rounds": 6,
-              "total": 35,
-              "pct_via_paradox": 17.1
+              "total": 46,
+              "pct_via_paradox": 13.0
             },
             {
               "recruiter": "Lee Threatt",
-              "interview_manual": 11,
+              "interview_manual": 12,
               "pdx_rounds": 1,
-              "total": 12,
-              "pct_via_paradox": 8.3
+              "total": 13,
+              "pct_via_paradox": 7.7
             },
             {
               "recruiter": "Emily Suchy",
-              "interview_manual": 26,
+              "interview_manual": 33,
               "pdx_rounds": 0,
-              "total": 26,
+              "total": 33,
               "pct_via_paradox": 0.0
             },
             {
               "recruiter": "Jaida Simone",
-              "interview_manual": 7,
+              "interview_manual": 8,
               "pdx_rounds": 0,
-              "total": 7,
+              "total": 8,
               "pct_via_paradox": 0.0
             },
             {
@@ -5941,9 +5961,9 @@ const DATA = {
             },
             {
               "recruiter": "Michael Maxfield",
-              "interview_manual": 26,
+              "interview_manual": 30,
               "pdx_rounds": 0,
-              "total": 26,
+              "total": 30,
               "pct_via_paradox": 0.0
             },
             {
@@ -5962,15 +5982,22 @@ const DATA = {
             },
             {
               "recruiter": "Zimri Gamble",
-              "interview_manual": 9,
+              "interview_manual": 18,
               "pdx_rounds": 0,
-              "total": 9,
+              "total": 18,
               "pct_via_paradox": 0.0
             }
           ]
         },
         "90d": {
           "by_recruiter": [
+            {
+              "recruiter": "September Buttorff",
+              "interview_manual": 0,
+              "pdx_rounds": 8,
+              "total": 8,
+              "pct_via_paradox": 100.0
+            },
             {
               "recruiter": "Seth Davis",
               "interview_manual": 0,
@@ -5981,30 +6008,30 @@ const DATA = {
             {
               "recruiter": "Melissa LeVitre",
               "interview_manual": 1,
-              "pdx_rounds": 74,
-              "total": 75,
-              "pct_via_paradox": 98.7
+              "pdx_rounds": 82,
+              "total": 83,
+              "pct_via_paradox": 98.8
             },
             {
               "recruiter": "Vidhi Bhadiyadra",
-              "interview_manual": 3,
-              "pdx_rounds": 91,
-              "total": 94,
-              "pct_via_paradox": 96.8
+              "interview_manual": 5,
+              "pdx_rounds": 96,
+              "total": 101,
+              "pct_via_paradox": 95.0
+            },
+            {
+              "recruiter": "Amy Simon",
+              "interview_manual": 9,
+              "pdx_rounds": 113,
+              "total": 122,
+              "pct_via_paradox": 92.6
             },
             {
               "recruiter": "Lauren Rovis",
               "interview_manual": 8,
-              "pdx_rounds": 103,
-              "total": 111,
-              "pct_via_paradox": 92.8
-            },
-            {
-              "recruiter": "Amy Simon",
-              "interview_manual": 10,
-              "pdx_rounds": 108,
-              "total": 118,
-              "pct_via_paradox": 91.5
+              "pdx_rounds": 96,
+              "total": 104,
+              "pct_via_paradox": 92.3
             },
             {
               "recruiter": "Tyler Kulbacki",
@@ -6022,80 +6049,80 @@ const DATA = {
             },
             {
               "recruiter": "Emily Braby",
-              "interview_manual": 8,
-              "pdx_rounds": 56,
-              "total": 64,
-              "pct_via_paradox": 87.5
+              "interview_manual": 9,
+              "pdx_rounds": 57,
+              "total": 66,
+              "pct_via_paradox": 86.4
+            },
+            {
+              "recruiter": "Tyson Green",
+              "interview_manual": 21,
+              "pdx_rounds": 85,
+              "total": 106,
+              "pct_via_paradox": 80.2
             },
             {
               "recruiter": "Christina Moubarak",
-              "interview_manual": 29,
-              "pdx_rounds": 98,
+              "interview_manual": 31,
+              "pdx_rounds": 96,
               "total": 127,
-              "pct_via_paradox": 77.2
+              "pct_via_paradox": 75.6
             },
             {
               "recruiter": "Brittney Stewart",
               "interview_manual": 29,
-              "pdx_rounds": 89,
-              "total": 118,
-              "pct_via_paradox": 75.4
+              "pdx_rounds": 87,
+              "total": 116,
+              "pct_via_paradox": 75.0
             },
             {
               "recruiter": "Kori Cude",
-              "interview_manual": 16,
-              "pdx_rounds": 47,
-              "total": 63,
-              "pct_via_paradox": 74.6
-            },
-            {
-              "recruiter": "Tyson Green",
-              "interview_manual": 29,
-              "pdx_rounds": 83,
-              "total": 112,
+              "interview_manual": 14,
+              "pdx_rounds": 40,
+              "total": 54,
               "pct_via_paradox": 74.1
             },
             {
               "recruiter": "Ann Webb",
-              "interview_manual": 36,
-              "pdx_rounds": 100,
-              "total": 136,
-              "pct_via_paradox": 73.5
+              "interview_manual": 37,
+              "pdx_rounds": 103,
+              "total": 140,
+              "pct_via_paradox": 73.6
             },
             {
               "recruiter": "Haley Stromness",
-              "interview_manual": 46,
-              "pdx_rounds": 116,
-              "total": 162,
-              "pct_via_paradox": 71.6
+              "interview_manual": 45,
+              "pdx_rounds": 124,
+              "total": 169,
+              "pct_via_paradox": 73.4
             },
             {
               "recruiter": "Alexia Lambson",
               "interview_manual": 30,
-              "pdx_rounds": 68,
-              "total": 98,
-              "pct_via_paradox": 69.4
+              "pdx_rounds": 65,
+              "total": 95,
+              "pct_via_paradox": 68.4
             },
             {
               "recruiter": "Brad Chatwin",
-              "interview_manual": 19,
+              "interview_manual": 17,
               "pdx_rounds": 34,
-              "total": 53,
-              "pct_via_paradox": 64.2
+              "total": 51,
+              "pct_via_paradox": 66.7
+            },
+            {
+              "recruiter": "Jacquie Wavra",
+              "interview_manual": 7,
+              "pdx_rounds": 4,
+              "total": 11,
+              "pct_via_paradox": 36.4
             },
             {
               "recruiter": "Tamika Allen",
-              "interview_manual": 66,
-              "pdx_rounds": 47,
-              "total": 113,
-              "pct_via_paradox": 41.6
-            },
-            {
-              "recruiter": "Jennie Barron",
-              "interview_manual": 44,
-              "pdx_rounds": 24,
-              "total": 68,
-              "pct_via_paradox": 35.3
+              "interview_manual": 72,
+              "pdx_rounds": 40,
+              "total": 112,
+              "pct_via_paradox": 35.7
             },
             {
               "recruiter": "Natalie Boyce",
@@ -6105,52 +6132,52 @@ const DATA = {
               "pct_via_paradox": 33.3
             },
             {
-              "recruiter": "Jacquie Wavra",
-              "interview_manual": 10,
-              "pdx_rounds": 4,
-              "total": 14,
-              "pct_via_paradox": 28.6
+              "recruiter": "Tasha Turner",
+              "interview_manual": 50,
+              "pdx_rounds": 25,
+              "total": 75,
+              "pct_via_paradox": 33.3
+            },
+            {
+              "recruiter": "Jennie Barron",
+              "interview_manual": 42,
+              "pdx_rounds": 19,
+              "total": 61,
+              "pct_via_paradox": 31.1
+            },
+            {
+              "recruiter": "Lee Threatt",
+              "interview_manual": 51,
+              "pdx_rounds": 16,
+              "total": 67,
+              "pct_via_paradox": 23.9
             },
             {
               "recruiter": "Stephanie Anderson",
               "interview_manual": 32,
-              "pdx_rounds": 12,
-              "total": 44,
-              "pct_via_paradox": 27.3
-            },
-            {
-              "recruiter": "Tasha Turner",
-              "interview_manual": 54,
-              "pdx_rounds": 19,
-              "total": 73,
-              "pct_via_paradox": 26.0
-            },
-            {
-              "recruiter": "Lee Threatt",
-              "interview_manual": 50,
-              "pdx_rounds": 16,
-              "total": 66,
-              "pct_via_paradox": 24.2
+              "pdx_rounds": 7,
+              "total": 39,
+              "pct_via_paradox": 17.9
             },
             {
               "recruiter": "Jaida Simone",
-              "interview_manual": 52,
+              "interview_manual": 51,
               "pdx_rounds": 1,
-              "total": 53,
+              "total": 52,
               "pct_via_paradox": 1.9
             },
             {
               "recruiter": "Ashley Archibald",
-              "interview_manual": 4,
+              "interview_manual": 3,
               "pdx_rounds": 0,
-              "total": 4,
+              "total": 3,
               "pct_via_paradox": 0.0
             },
             {
               "recruiter": "Emily Suchy",
-              "interview_manual": 68,
+              "interview_manual": 75,
               "pdx_rounds": 0,
-              "total": 68,
+              "total": 75,
               "pct_via_paradox": 0.0
             },
             {
@@ -6183,24 +6210,24 @@ const DATA = {
             },
             {
               "recruiter": "Miguel Luna",
-              "interview_manual": 29,
+              "interview_manual": 28,
               "pdx_rounds": 0,
-              "total": 29,
+              "total": 28,
               "pct_via_paradox": 0.0
             },
             {
               "recruiter": "Zimri Gamble",
-              "interview_manual": 92,
+              "interview_manual": 99,
               "pdx_rounds": 0,
-              "total": 92,
+              "total": 99,
               "pct_via_paradox": 0.0
             }
           ]
         }
       },
       "adoption_rate": {
-        "round_30d": 66.3,
-        "round_90d": 61.9,
+        "round_30d": 65.0,
+        "round_90d": 62.0,
         "method": "Weighted org-wide: total PDX rounds / total rounds (manual+PDX), not an average of individual recruiter rates."
       }
     },
@@ -6208,50 +6235,50 @@ const DATA = {
       "note": "Real Gem stage-entry data on Screen 1. Gem distinguishes Recruiter Screen (manual) from Recruiter Screen PDX (Paradox-scheduled) as separate stages -- this reflects that split directly, no inference involved. The main dashboard continues to show these two combined as a single 'Screen' stage. Important: this only counts candidates who moved through a Workday-integrated PDX stage. If a recruiter uses the Paradox browser extension to schedule an interview directly (rather than triggering it through the Workday PDX flow), that interview will not be tagged as PDX in Gem and will show here as manual, even though Paradox was actually used.",
       "windows": {
         "30d": {
-          "org_manual": 459,
-          "org_pdx": 656,
+          "org_manual": 503,
+          "org_pdx": 759,
           "by_recruiter": [
-            {
-              "recruiter": "Emily Suchy",
-              "manual": 0,
-              "pdx": 39,
-              "total": 39,
-              "pct_via_paradox": 100.0
-            },
             {
               "recruiter": "September Buttorff",
               "manual": 0,
-              "pdx": 10,
-              "total": 10,
+              "pdx": 14,
+              "total": 14,
               "pct_via_paradox": 100.0
+            },
+            {
+              "recruiter": "Emily Suchy",
+              "manual": 1,
+              "pdx": 44,
+              "total": 45,
+              "pct_via_paradox": 97.8
             },
             {
               "recruiter": "Tasha Turner",
               "manual": 2,
-              "pdx": 56,
-              "total": 58,
-              "pct_via_paradox": 96.6
-            },
-            {
-              "recruiter": "Jaida Simone",
-              "manual": 2,
-              "pdx": 39,
-              "total": 41,
-              "pct_via_paradox": 95.1
+              "pdx": 76,
+              "total": 78,
+              "pct_via_paradox": 97.4
             },
             {
               "recruiter": "Melissa LeVitre",
               "manual": 3,
-              "pdx": 44,
-              "total": 47,
-              "pct_via_paradox": 93.6
+              "pdx": 46,
+              "total": 49,
+              "pct_via_paradox": 93.9
+            },
+            {
+              "recruiter": "Jaida Simone",
+              "manual": 3,
+              "pdx": 39,
+              "total": 42,
+              "pct_via_paradox": 92.9
             },
             {
               "recruiter": "Haley Stromness",
-              "manual": 10,
-              "pdx": 96,
-              "total": 106,
-              "pct_via_paradox": 90.6
+              "manual": 11,
+              "pdx": 114,
+              "total": 125,
+              "pct_via_paradox": 91.2
             },
             {
               "recruiter": "Kori Cude",
@@ -6261,88 +6288,88 @@ const DATA = {
               "pct_via_paradox": 87.5
             },
             {
+              "recruiter": "Alexia Lambson",
+              "manual": 5,
+              "pdx": 30,
+              "total": 35,
+              "pct_via_paradox": 85.7
+            },
+            {
               "recruiter": "Ann Webb",
               "manual": 17,
-              "pdx": 88,
-              "total": 105,
-              "pct_via_paradox": 83.8
+              "pdx": 98,
+              "total": 115,
+              "pct_via_paradox": 85.2
             },
             {
               "recruiter": "Brittney Stewart",
               "manual": 7,
-              "pdx": 32,
-              "total": 39,
-              "pct_via_paradox": 82.1
-            },
-            {
-              "recruiter": "Alexia Lambson",
-              "manual": 5,
-              "pdx": 20,
-              "total": 25,
-              "pct_via_paradox": 80.0
-            },
-            {
-              "recruiter": "Seth Davis",
-              "manual": 1,
-              "pdx": 4,
-              "total": 5,
-              "pct_via_paradox": 80.0
+              "pdx": 34,
+              "total": 41,
+              "pct_via_paradox": 82.9
             },
             {
               "recruiter": "Emily Braby",
-              "manual": 9,
-              "pdx": 34,
-              "total": 43,
-              "pct_via_paradox": 79.1
+              "manual": 10,
+              "pdx": 40,
+              "total": 50,
+              "pct_via_paradox": 80.0
             },
             {
               "recruiter": "Christina Moubarak",
-              "manual": 25,
-              "pdx": 86,
-              "total": 111,
-              "pct_via_paradox": 77.5
+              "manual": 26,
+              "pdx": 87,
+              "total": 113,
+              "pct_via_paradox": 77.0
             },
             {
               "recruiter": "Brad Chatwin",
-              "manual": 9,
-              "pdx": 24,
-              "total": 33,
-              "pct_via_paradox": 72.7
-            },
-            {
-              "recruiter": "Tyler Kulbacki",
-              "manual": 18,
-              "pdx": 35,
-              "total": 53,
-              "pct_via_paradox": 66.0
+              "manual": 10,
+              "pdx": 28,
+              "total": 38,
+              "pct_via_paradox": 73.7
             },
             {
               "recruiter": "Stephanie Anderson",
               "manual": 5,
-              "pdx": 9,
-              "total": 14,
-              "pct_via_paradox": 64.3
+              "pdx": 13,
+              "total": 18,
+              "pct_via_paradox": 72.2
+            },
+            {
+              "recruiter": "Tyler Kulbacki",
+              "manual": 19,
+              "pdx": 39,
+              "total": 58,
+              "pct_via_paradox": 67.2
+            },
+            {
+              "recruiter": "Seth Davis",
+              "manual": 1,
+              "pdx": 2,
+              "total": 3,
+              "pct_via_paradox": 66.7
             },
             {
               "recruiter": "Tyson Green",
               "manual": 7,
-              "pdx": 10,
-              "total": 17,
-              "pct_via_paradox": 58.8
+              "pdx": 12,
+              "total": 19,
+              "pct_via_paradox": 63.2
+            },
+            {
+              "recruiter": "Miguel Luna",
+              "manual": 9,
+              "pdx": 9,
+              "total": 18,
+              "pct_via_paradox": 50.0
             },
             {
               "recruiter": "Tamika Allen",
-              "manual": 20,
-              "pdx": 16,
-              "total": 36,
-              "pct_via_paradox": 44.4
-            },
-            {
-              "recruiter": "Lauren Rovis",
-              "manual": 3,
-              "pdx": 1,
-              "total": 4,
-              "pct_via_paradox": 25.0
+              "manual": 22,
+              "pdx": 20,
+              "total": 42,
+              "pct_via_paradox": 47.6
             },
             {
               "recruiter": "Jennie Barron",
@@ -6353,37 +6380,44 @@ const DATA = {
             },
             {
               "recruiter": "Garrett Bunyak",
-              "manual": 26,
+              "manual": 30,
               "pdx": 1,
-              "total": 27,
-              "pct_via_paradox": 3.7
-            },
-            {
-              "recruiter": "Mallory Loken",
-              "manual": 46,
-              "pdx": 1,
-              "total": 47,
-              "pct_via_paradox": 2.1
-            },
-            {
-              "recruiter": "Vidhi Bhadiyadra",
-              "manual": 52,
-              "pdx": 1,
-              "total": 53,
-              "pct_via_paradox": 1.9
+              "total": 31,
+              "pct_via_paradox": 3.2
             },
             {
               "recruiter": "Amy Simon",
-              "manual": 28,
-              "pdx": 0,
-              "total": 28,
-              "pct_via_paradox": 0.0
+              "manual": 33,
+              "pdx": 1,
+              "total": 34,
+              "pct_via_paradox": 2.9
+            },
+            {
+              "recruiter": "Mallory Loken",
+              "manual": 48,
+              "pdx": 1,
+              "total": 49,
+              "pct_via_paradox": 2.0
+            },
+            {
+              "recruiter": "Vidhi Bhadiyadra",
+              "manual": 58,
+              "pdx": 1,
+              "total": 59,
+              "pct_via_paradox": 1.7
             },
             {
               "recruiter": "Jacquie Wavra",
               "manual": 1,
               "pdx": 0,
               "total": 1,
+              "pct_via_paradox": 0.0
+            },
+            {
+              "recruiter": "Lauren Rovis",
+              "manual": 3,
+              "pdx": 0,
+              "total": 3,
               "pct_via_paradox": 0.0
             },
             {
@@ -6395,16 +6429,9 @@ const DATA = {
             },
             {
               "recruiter": "Michael Maxfield",
-              "manual": 100,
+              "manual": 107,
               "pdx": 0,
-              "total": 100,
-              "pct_via_paradox": 0.0
-            },
-            {
-              "recruiter": "Miguel Luna",
-              "manual": 9,
-              "pdx": 0,
-              "total": 9,
+              "total": 107,
               "pct_via_paradox": 0.0
             },
             {
@@ -6416,86 +6443,86 @@ const DATA = {
             },
             {
               "recruiter": "Zimri Gamble",
-              "manual": 9,
+              "manual": 20,
               "pdx": 0,
-              "total": 9,
+              "total": 20,
               "pct_via_paradox": 0.0
             }
           ]
         },
         "90d": {
-          "org_manual": 1536,
-          "org_pdx": 1764,
+          "org_manual": 1491,
+          "org_pdx": 1842,
           "by_recruiter": [
             {
               "recruiter": "September Buttorff",
               "manual": 0,
-              "pdx": 10,
-              "total": 10,
+              "pdx": 17,
+              "total": 17,
               "pct_via_paradox": 100.0
             },
             {
               "recruiter": "Emily Suchy",
-              "manual": 4,
-              "pdx": 92,
-              "total": 96,
-              "pct_via_paradox": 95.8
+              "manual": 5,
+              "pdx": 97,
+              "total": 102,
+              "pct_via_paradox": 95.1
             },
             {
               "recruiter": "Brittney Stewart",
               "manual": 10,
-              "pdx": 155,
-              "total": 165,
-              "pct_via_paradox": 93.9
+              "pdx": 156,
+              "total": 166,
+              "pct_via_paradox": 94.0
             },
             {
               "recruiter": "Tasha Turner",
-              "manual": 18,
-              "pdx": 133,
-              "total": 151,
-              "pct_via_paradox": 88.1
+              "manual": 14,
+              "pdx": 153,
+              "total": 167,
+              "pct_via_paradox": 91.6
             },
             {
               "recruiter": "Melissa LeVitre",
               "manual": 8,
-              "pdx": 56,
-              "total": 64,
-              "pct_via_paradox": 87.5
+              "pdx": 58,
+              "total": 66,
+              "pct_via_paradox": 87.9
             },
             {
               "recruiter": "Haley Stromness",
               "manual": 34,
-              "pdx": 208,
-              "total": 242,
-              "pct_via_paradox": 86.0
+              "pdx": 224,
+              "total": 258,
+              "pct_via_paradox": 86.8
             },
             {
               "recruiter": "Tyler Kulbacki",
               "manual": 29,
-              "pdx": 154,
-              "total": 183,
-              "pct_via_paradox": 84.2
+              "pdx": 156,
+              "total": 185,
+              "pct_via_paradox": 84.3
             },
             {
               "recruiter": "Emily Braby",
-              "manual": 11,
-              "pdx": 50,
-              "total": 61,
-              "pct_via_paradox": 82.0
+              "manual": 12,
+              "pdx": 56,
+              "total": 68,
+              "pct_via_paradox": 82.4
             },
             {
               "recruiter": "Ann Webb",
               "manual": 49,
-              "pdx": 205,
-              "total": 254,
-              "pct_via_paradox": 80.7
+              "pdx": 217,
+              "total": 266,
+              "pct_via_paradox": 81.6
             },
             {
               "recruiter": "Christina Moubarak",
-              "manual": 54,
-              "pdx": 226,
+              "manual": 55,
+              "pdx": 225,
               "total": 280,
-              "pct_via_paradox": 80.7
+              "pct_via_paradox": 80.4
             },
             {
               "recruiter": "Seth Davis",
@@ -6507,65 +6534,72 @@ const DATA = {
             {
               "recruiter": "Alexia Lambson",
               "manual": 34,
-              "pdx": 94,
-              "total": 128,
-              "pct_via_paradox": 73.4
+              "pdx": 104,
+              "total": 138,
+              "pct_via_paradox": 75.4
             },
             {
               "recruiter": "Kori Cude",
-              "manual": 11,
+              "manual": 10,
               "pdx": 28,
-              "total": 39,
-              "pct_via_paradox": 71.8
-            },
-            {
-              "recruiter": "Lauren Rovis",
-              "manual": 30,
-              "pdx": 49,
-              "total": 79,
-              "pct_via_paradox": 62.0
+              "total": 38,
+              "pct_via_paradox": 73.7
             },
             {
               "recruiter": "Stephanie Anderson",
               "manual": 15,
-              "pdx": 23,
-              "total": 38,
-              "pct_via_paradox": 60.5
+              "pdx": 26,
+              "total": 41,
+              "pct_via_paradox": 63.4
             },
             {
               "recruiter": "Tamika Allen",
-              "manual": 53,
-              "pdx": 74,
-              "total": 127,
-              "pct_via_paradox": 58.3
+              "manual": 50,
+              "pdx": 75,
+              "total": 125,
+              "pct_via_paradox": 60.0
             },
             {
               "recruiter": "Tyson Green",
-              "manual": 62,
-              "pdx": 62,
-              "total": 124,
-              "pct_via_paradox": 50.0
+              "manual": 54,
+              "pdx": 63,
+              "total": 117,
+              "pct_via_paradox": 53.8
             },
             {
               "recruiter": "Jacquie Wavra",
-              "manual": 10,
+              "manual": 8,
               "pdx": 9,
-              "total": 19,
-              "pct_via_paradox": 47.4
+              "total": 17,
+              "pct_via_paradox": 52.9
             },
             {
               "recruiter": "Jaida Simone",
-              "manual": 61,
+              "manual": 45,
               "pdx": 47,
-              "total": 108,
-              "pct_via_paradox": 43.5
+              "total": 92,
+              "pct_via_paradox": 51.1
+            },
+            {
+              "recruiter": "Lauren Rovis",
+              "manual": 27,
+              "pdx": 28,
+              "total": 55,
+              "pct_via_paradox": 50.9
             },
             {
               "recruiter": "Brad Chatwin",
-              "manual": 93,
-              "pdx": 51,
-              "total": 144,
-              "pct_via_paradox": 35.4
+              "manual": 88,
+              "pdx": 55,
+              "total": 143,
+              "pct_via_paradox": 38.5
+            },
+            {
+              "recruiter": "Miguel Luna",
+              "manual": 28,
+              "pdx": 9,
+              "total": 37,
+              "pct_via_paradox": 24.3
             },
             {
               "recruiter": "Lee Threatt",
@@ -6576,51 +6610,51 @@ const DATA = {
             },
             {
               "recruiter": "Garrett Bunyak",
-              "manual": 97,
+              "manual": 101,
               "pdx": 9,
-              "total": 106,
-              "pct_via_paradox": 8.5
+              "total": 110,
+              "pct_via_paradox": 8.2
             },
             {
               "recruiter": "Amy Simon",
-              "manual": 76,
-              "pdx": 6,
-              "total": 82,
-              "pct_via_paradox": 7.3
+              "manual": 79,
+              "pdx": 7,
+              "total": 86,
+              "pct_via_paradox": 8.1
             },
             {
               "recruiter": "Jennie Barron",
-              "manual": 76,
+              "manual": 69,
               "pdx": 3,
-              "total": 79,
-              "pct_via_paradox": 3.8
+              "total": 72,
+              "pct_via_paradox": 4.2
             },
             {
               "recruiter": "Mallory Loken",
-              "manual": 105,
+              "manual": 104,
               "pdx": 1,
-              "total": 106,
-              "pct_via_paradox": 0.9
+              "total": 105,
+              "pct_via_paradox": 1.0
             },
             {
               "recruiter": "Michael Maxfield",
-              "manual": 226,
+              "manual": 213,
               "pdx": 2,
-              "total": 228,
+              "total": 215,
               "pct_via_paradox": 0.9
             },
             {
               "recruiter": "Vidhi Bhadiyadra",
-              "manual": 113,
+              "manual": 120,
               "pdx": 1,
-              "total": 114,
-              "pct_via_paradox": 0.9
+              "total": 121,
+              "pct_via_paradox": 0.8
             },
             {
               "recruiter": "Ashley Archibald",
-              "manual": 23,
+              "manual": 17,
               "pdx": 0,
-              "total": 23,
+              "total": 17,
               "pct_via_paradox": 0.0
             },
             {
@@ -6638,13 +6672,6 @@ const DATA = {
               "pct_via_paradox": 0.0
             },
             {
-              "recruiter": "Miguel Luna",
-              "manual": 29,
-              "pdx": 0,
-              "total": 29,
-              "pct_via_paradox": 0.0
-            },
-            {
               "recruiter": "Natalie Boyce",
               "manual": 17,
               "pdx": 0,
@@ -6653,17 +6680,17 @@ const DATA = {
             },
             {
               "recruiter": "Zimri Gamble",
-              "manual": 115,
+              "manual": 123,
               "pdx": 0,
-              "total": 115,
+              "total": 123,
               "pct_via_paradox": 0.0
             }
           ]
         }
       },
       "adoption_rate": {
-        "screen_30d": 58.8,
-        "screen_90d": 53.5,
+        "screen_30d": 60.1,
+        "screen_90d": 55.3,
         "method": "Weighted org-wide: total PDX screens / total screens (manual+PDX), not an average of individual recruiter rates. Individual low-volume recruiters do not distort this."
       }
     },
@@ -38825,78 +38852,78 @@ const DATA = {
   },
   "recruiters": {
     "Emily Suchy": {
-      "open_reqs": 24.0,
+      "open_reqs": 23.0,
       "active_candidates": 1356.0,
-      "screens_30d": 39.0,
-      "screen_to_hire_30d": 20.5,
+      "screens_30d": 45.0,
+      "screen_to_hire_30d": 20.0,
       "closed_openings_90d": 107.0,
       "ttf_median_90d": 88.0,
       "ttf_mean_90d": 536.4,
       "tto_pre_days": 16.2,
       "tto_active_days": 7.7,
       "evergreen_reqs": 3,
-      "reqs_at_offer": 1,
-      "hires_7d": 0,
-      "hires_30d": 8,
-      "hires_90d": 19,
+      "reqs_at_offer": 2,
+      "hires_7d": 1,
+      "hires_30d": 9,
+      "hires_90d": 20,
       "unique_profiles": 10,
       "hm_count": 17,
-      "closing_soon": 1,
+      "closing_soon": 2,
       "new_7d": 5,
-      "days_in_submitted_90d": 11.5,
-      "days_in_submitted_30d": 7.7,
+      "days_in_submitted_90d": 10.6,
+      "days_in_submitted_30d": 6.5,
       "leader": "Natalie Boyce",
       "active_by_stage": {
         "Hired": 3,
-        "Interview": 71,
-        "Recruiter Screen": 41,
-        "Submitted": 1128,
-        "Offer": 1
+        "Interview": 72,
+        "Recruiter Screen": 39,
+        "Submitted": 1066,
+        "Offer": 2
       },
       "submitted_30d": 548,
       "submitted_90d": 1325,
-      "offers_30d": 4,
+      "offers_30d": 6,
       "candidates_past_submitted": 116
     },
     "Zimri Gamble": {
       "open_reqs": 30.0,
       "active_candidates": 77.0,
-      "screens_30d": 9.0,
-      "screen_to_hire_30d": 44.4,
+      "screens_30d": 20.0,
+      "screen_to_hire_30d": 25.0,
       "closed_openings_90d": 66.0,
       "ttf_median_90d": 252.5,
       "ttf_mean_90d": 456.9,
       "tto_pre_days": 4.8,
       "tto_active_days": 4.9,
       "evergreen_reqs": 0,
-      "reqs_at_offer": 0,
-      "hires_7d": 1,
-      "hires_30d": 4,
-      "hires_90d": 29,
+      "reqs_at_offer": 1,
+      "hires_7d": 2,
+      "hires_30d": 5,
+      "hires_90d": 30,
       "unique_profiles": 5,
       "hm_count": 13,
-      "closing_soon": 0,
-      "new_7d": 5,
-      "days_in_submitted_90d": 5.5,
-      "days_in_submitted_30d": 7.7,
+      "closing_soon": 1,
+      "new_7d": 6,
+      "days_in_submitted_90d": 5.8,
+      "days_in_submitted_30d": 9.0,
       "leader": "Jared Schiller",
       "active_by_stage": {
         "Hired": 5,
-        "Interview": 45,
-        "Recruiter Screen": 6,
-        "Submitted": 158,
-        "Offer": 1
+        "Interview": 50,
+        "Recruiter Screen": 8,
+        "Submitted": 154,
+        "Offer": 2
       },
       "submitted_30d": 133,
       "submitted_90d": 309,
-      "offers_30d": 1,
-      "candidates_past_submitted": 57
+      "offers_30d": 3,
+      "candidates_past_submitted": 65
     },
     "Miguel Luna": {
-      "open_reqs": 22.0,
+      "open_reqs": 19.0,
       "active_candidates": 1.0,
-      "screens_30d": 9.0,
-      "screen_to_hire_30d": 100.0,
+      "screens_30d": 18.0,
+      "screen_to_hire_30d": 50.0,
       "closed_openings_90d": 61.0,
       "ttf_median_90d": 341.0,
       "ttf_mean_90d": 608.7,
@@ -38911,60 +38938,61 @@ const DATA = {
       "hm_count": 9,
       "closing_soon": 0,
       "new_7d": 6,
-      "days_in_submitted_90d": 0.0,
-      "days_in_submitted_30d": 0.0,
+      "days_in_submitted_90d": 0.4,
+      "days_in_submitted_30d": 0.7,
       "leader": "Jared Schiller",
       "active_by_stage": {
-        "Hired": 9,
-        "Submitted": 8
+        "Hired": 6,
+        "Recruiter Screen PDX": 9,
+        "Submitted": 287
       },
       "submitted_30d": 3,
       "submitted_90d": 28,
       "offers_30d": 9,
-      "candidates_past_submitted": 9
+      "candidates_past_submitted": 15
     },
     "Ann Webb": {
       "open_reqs": 16.0,
       "active_candidates": 587.0,
-      "screens_30d": 105.0,
-      "screen_to_hire_30d": 5.7,
+      "screens_30d": 115.0,
+      "screen_to_hire_30d": 6.1,
       "closed_openings_90d": 49.0,
       "ttf_median_90d": 202.0,
       "ttf_mean_90d": 595.4,
       "tto_pre_days": 9.6,
       "tto_active_days": 13.9,
       "evergreen_reqs": 0,
-      "reqs_at_offer": 2,
-      "hires_7d": 0,
-      "hires_30d": 6,
-      "hires_90d": 23,
+      "reqs_at_offer": 1,
+      "hires_7d": 1,
+      "hires_30d": 7,
+      "hires_90d": 24,
       "unique_profiles": 12,
       "hm_count": 11,
       "closing_soon": 2,
-      "new_7d": 2,
-      "days_in_submitted_90d": 6.1,
+      "new_7d": 0,
+      "days_in_submitted_90d": 5.4,
       "days_in_submitted_30d": 3.0,
       "leader": "Seth Davis",
       "active_by_stage": {
-        "Hired": 1,
-        "Interview": 29,
-        "Recruiter Screen": 104,
-        "Round 1 PDX": 31,
+        "Hired": 2,
+        "Interview": 30,
+        "Recruiter Screen": 112,
+        "Round 1 PDX": 33,
         "Round 2 PDX": 8,
         "Round 3 PDX": 1,
-        "Submitted": 1629,
-        "Offer": 6
+        "Submitted": 1660,
+        "Offer": 5
       },
       "submitted_30d": 1555,
       "submitted_90d": 3835,
       "offers_30d": 4,
-      "candidates_past_submitted": 180
+      "candidates_past_submitted": 191
     },
     "Tamika Allen": {
       "open_reqs": 22.0,
       "active_candidates": 225.0,
-      "screens_30d": 36.0,
-      "screen_to_hire_30d": 16.7,
+      "screens_30d": 42.0,
+      "screen_to_hire_30d": 14.3,
       "closed_openings_90d": 642.0,
       "ttf_median_90d": 166.0,
       "ttf_mean_90d": 479.3,
@@ -38979,28 +39007,28 @@ const DATA = {
       "hm_count": 14,
       "closing_soon": 3,
       "new_7d": 1,
-      "days_in_submitted_90d": 4.9,
-      "days_in_submitted_30d": 2.8,
+      "days_in_submitted_90d": 5.2,
+      "days_in_submitted_30d": 3.3,
       "leader": "Jeff Arnold",
       "active_by_stage": {
         "Hired": 3,
-        "Interview": 58,
-        "Recruiter Screen": 64,
+        "Interview": 67,
+        "Recruiter Screen": 59,
         "Round 1 PDX": 12,
         "Round 2 PDX": 3,
-        "Submitted": 2356,
-        "Offer": 3
+        "Submitted": 2399,
+        "Offer": 4
       },
       "submitted_30d": 1122,
       "submitted_90d": 3225,
-      "offers_30d": 8,
-      "candidates_past_submitted": 143
+      "offers_30d": 9,
+      "candidates_past_submitted": 148
     },
     "Lauren Rovis": {
-      "open_reqs": 6.0,
+      "open_reqs": 3.0,
       "active_candidates": 1973.0,
-      "screens_30d": 4.0,
-      "screen_to_hire_30d": 125.0,
+      "screens_30d": 3.0,
+      "screen_to_hire_30d": 133.3,
       "closed_openings_90d": 12.0,
       "ttf_median_90d": 331.0,
       "ttf_mean_90d": 602.9,
@@ -39009,35 +39037,35 @@ const DATA = {
       "evergreen_reqs": 0,
       "reqs_at_offer": 1,
       "hires_7d": 1,
-      "hires_30d": 5,
-      "hires_90d": 17,
+      "hires_30d": 4,
+      "hires_90d": 16,
       "unique_profiles": 13,
       "hm_count": 11,
       "closing_soon": 1,
       "new_7d": 0,
-      "days_in_submitted_90d": 3.7,
+      "days_in_submitted_90d": 3.5,
       "days_in_submitted_30d": 0.0,
       "leader": "Seth Davis",
       "active_by_stage": {
-        "Hired": 3,
+        "Hired": 1,
         "Interview": 2,
-        "Recruiter Screen PDX": 5,
-        "Round 1 PDX": 11,
-        "Round 2 PDX": 2,
+        "Recruiter Screen PDX": 4,
+        "Round 1 PDX": 10,
+        "Round 2 PDX": 1,
         "Round 3 PDX": 3,
-        "Submitted": 759,
+        "Submitted": 577,
         "Offer": 1
       },
       "submitted_30d": 2503,
       "submitted_90d": 5043,
-      "offers_30d": 3,
-      "candidates_past_submitted": 27
+      "offers_30d": 2,
+      "candidates_past_submitted": 22
     },
     "Garrett Bunyak": {
-      "open_reqs": 13.0,
+      "open_reqs": 11.0,
       "active_candidates": 1964.0,
-      "screens_30d": 27.0,
-      "screen_to_hire_30d": 18.5,
+      "screens_30d": 31.0,
+      "screen_to_hire_30d": 19.4,
       "closed_openings_90d": 30.0,
       "ttf_median_90d": 331.0,
       "ttf_mean_90d": 497.0,
@@ -39045,108 +39073,108 @@ const DATA = {
       "tto_active_days": 12.7,
       "evergreen_reqs": 0,
       "reqs_at_offer": 1,
-      "hires_7d": 0,
-      "hires_30d": 5,
-      "hires_90d": 13,
+      "hires_7d": 1,
+      "hires_30d": 6,
+      "hires_90d": 14,
       "unique_profiles": 10,
       "hm_count": 10,
-      "closing_soon": 7,
+      "closing_soon": 6,
       "new_7d": 0,
-      "days_in_submitted_90d": 4.0,
-      "days_in_submitted_30d": 3.8,
+      "days_in_submitted_90d": 3.8,
+      "days_in_submitted_30d": 4.8,
       "leader": "Seth Davis",
       "active_by_stage": {
-        "Hired": 2,
+        "Hired": 1,
         "Interview": 2,
-        "Recruiter Screen": 10,
-        "Round 1 PDX": 32,
+        "Recruiter Screen": 11,
+        "Round 1 PDX": 35,
         "Round 2 PDX": 13,
-        "Round 3 PDX": 4,
-        "Submitted": 1595,
-        "Offer": 2
+        "Round 3 PDX": 3,
+        "Submitted": 1604,
+        "Offer": 1
       },
       "submitted_30d": 2736,
       "submitted_90d": 4746,
-      "offers_30d": 3,
-      "candidates_past_submitted": 65
+      "offers_30d": 4,
+      "candidates_past_submitted": 66
     },
     "Amy Simon": {
       "open_reqs": 14.0,
       "active_candidates": 1439.0,
-      "screens_30d": 28.0,
-      "screen_to_hire_30d": 14.3,
+      "screens_30d": 34.0,
+      "screen_to_hire_30d": 11.8,
       "closed_openings_90d": 38.0,
       "ttf_median_90d": 114.0,
       "ttf_mean_90d": 435.2,
       "tto_pre_days": 7.8,
       "tto_active_days": 4.2,
       "evergreen_reqs": 0,
-      "reqs_at_offer": 1,
+      "reqs_at_offer": 2,
       "hires_7d": 0,
       "hires_30d": 4,
       "hires_90d": 17,
       "unique_profiles": 8,
       "hm_count": 10,
-      "closing_soon": 6,
-      "new_7d": 4,
-      "days_in_submitted_90d": 5.6,
-      "days_in_submitted_30d": 5.0,
+      "closing_soon": 4,
+      "new_7d": 0,
+      "days_in_submitted_90d": 6.4,
+      "days_in_submitted_30d": 6.2,
       "leader": "Seth Davis",
       "active_by_stage": {
-        "Recruiter Screen PDX": 3,
-        "Round 1 PDX": 19,
-        "Round 2 PDX": 14,
-        "Round 3 PDX": 1,
-        "Submitted": 2448,
-        "Offer": 2
+        "Recruiter Screen": 4,
+        "Round 1 PDX": 23,
+        "Round 2 PDX": 13,
+        "Round 3 PDX": 2,
+        "Submitted": 2497,
+        "Offer": 3
       },
       "submitted_30d": 4557,
       "submitted_90d": 9980,
-      "offers_30d": 1,
-      "candidates_past_submitted": 39
+      "offers_30d": 2,
+      "candidates_past_submitted": 45
     },
     "Tyson Green": {
-      "open_reqs": 7.0,
+      "open_reqs": 6.0,
       "active_candidates": 129.0,
-      "screens_30d": 17.0,
-      "screen_to_hire_30d": 35.3,
+      "screens_30d": 19.0,
+      "screen_to_hire_30d": 36.8,
       "closed_openings_90d": 41.0,
       "ttf_median_90d": 153.0,
       "ttf_mean_90d": 656.0,
       "tto_pre_days": 5.0,
       "tto_active_days": 10.9,
-      "evergreen_reqs": 1,
+      "evergreen_reqs": 0,
       "reqs_at_offer": 1,
-      "hires_7d": 0,
-      "hires_30d": 6,
-      "hires_90d": 17,
+      "hires_7d": 1,
+      "hires_30d": 7,
+      "hires_90d": 18,
       "unique_profiles": 7,
       "hm_count": 9,
       "closing_soon": 2,
-      "new_7d": 0,
-      "days_in_submitted_90d": 4.8,
-      "days_in_submitted_30d": 0.5,
+      "new_7d": 1,
+      "days_in_submitted_90d": 5.0,
+      "days_in_submitted_30d": 2.2,
       "leader": "Jeff Arnold",
       "active_by_stage": {
         "Hired": 2,
-        "Interview": 5,
-        "Recruiter Screen": 12,
+        "Interview": 4,
+        "Recruiter Screen": 14,
         "Round 1 PDX": 10,
-        "Round 2 PDX": 4,
-        "Round 3 PDX": 3,
-        "Submitted": 173,
-        "Offer": 4
+        "Round 2 PDX": 2,
+        "Round 3 PDX": 5,
+        "Submitted": 141,
+        "Offer": 2
       },
       "submitted_30d": 357,
       "submitted_90d": 648,
-      "offers_30d": 7,
-      "candidates_past_submitted": 40
+      "offers_30d": 8,
+      "candidates_past_submitted": 39
     },
     "Haley Stromness": {
-      "open_reqs": 18.0,
+      "open_reqs": 19.0,
       "active_candidates": 246.0,
-      "screens_30d": 106.0,
-      "screen_to_hire_30d": 9.4,
+      "screens_30d": 125.0,
+      "screen_to_hire_30d": 8.8,
       "closed_openings_90d": 38.0,
       "ttf_median_90d": 82.0,
       "ttf_mean_90d": 224.9,
@@ -39154,35 +39182,35 @@ const DATA = {
       "tto_active_days": 14.2,
       "evergreen_reqs": 1,
       "reqs_at_offer": 2,
-      "hires_7d": 2,
-      "hires_30d": 10,
+      "hires_7d": 1,
+      "hires_30d": 11,
       "hires_90d": 26,
       "unique_profiles": 9,
       "hm_count": 10,
       "closing_soon": 2,
-      "new_7d": 2,
-      "days_in_submitted_90d": 6.2,
-      "days_in_submitted_30d": 4.6,
+      "new_7d": 3,
+      "days_in_submitted_90d": 6.9,
+      "days_in_submitted_30d": 6.7,
       "leader": "Jared Schiller",
       "active_by_stage": {
-        "Hired": 6,
+        "Hired": 5,
         "Interview": 15,
-        "Recruiter Screen": 88,
-        "Round 1 PDX": 33,
-        "Round 2 PDX": 10,
-        "Submitted": 529,
-        "Offer": 2
+        "Recruiter Screen": 89,
+        "Round 1 PDX": 32,
+        "Round 2 PDX": 5,
+        "Submitted": 412,
+        "Offer": 1
       },
       "submitted_30d": 629,
       "submitted_90d": 1300,
-      "offers_30d": 12,
-      "candidates_past_submitted": 154
+      "offers_30d": 13,
+      "candidates_past_submitted": 147
     },
     "Michael Maxfield": {
       "open_reqs": 15.0,
       "active_candidates": 250.0,
-      "screens_30d": 100.0,
-      "screen_to_hire_30d": 6.0,
+      "screens_30d": 107.0,
+      "screen_to_hire_30d": 5.6,
       "closed_openings_90d": 36.0,
       "ttf_median_90d": 153.0,
       "ttf_mean_90d": 374.0,
@@ -39192,31 +39220,31 @@ const DATA = {
       "reqs_at_offer": 1,
       "hires_7d": 1,
       "hires_30d": 6,
-      "hires_90d": 9,
+      "hires_90d": 7,
       "unique_profiles": 13,
       "hm_count": 7,
       "closing_soon": 1,
       "new_7d": 2,
-      "days_in_submitted_90d": 13.1,
-      "days_in_submitted_30d": 4.8,
+      "days_in_submitted_90d": 12.5,
+      "days_in_submitted_30d": 4.6,
       "leader": "Evan Pincus",
       "active_by_stage": {
         "Hired": 2,
-        "Interview": 25,
-        "Recruiter Screen": 74,
-        "Submitted": 721,
+        "Interview": 29,
+        "Recruiter Screen": 77,
+        "Submitted": 753,
         "Offer": 1
       },
       "submitted_30d": 343,
       "submitted_90d": 1615,
       "offers_30d": 4,
-      "candidates_past_submitted": 102
+      "candidates_past_submitted": 109
     },
     "Alexia Lambson": {
-      "open_reqs": 14.0,
+      "open_reqs": 13.0,
       "active_candidates": 74.0,
-      "screens_30d": 25.0,
-      "screen_to_hire_30d": 32.0,
+      "screens_30d": 35.0,
+      "screen_to_hire_30d": 22.9,
       "closed_openings_90d": 20.0,
       "ttf_median_90d": 148.0,
       "ttf_mean_90d": 480.6,
@@ -39224,35 +39252,35 @@ const DATA = {
       "tto_active_days": 16.5,
       "evergreen_reqs": 0,
       "reqs_at_offer": 1,
-      "hires_7d": 1,
+      "hires_7d": 0,
       "hires_30d": 8,
       "hires_90d": 20,
       "unique_profiles": 13,
       "hm_count": 12,
       "closing_soon": 2,
-      "new_7d": 1,
-      "days_in_submitted_90d": 5.7,
-      "days_in_submitted_30d": 3.2,
+      "new_7d": 0,
+      "days_in_submitted_90d": 6.2,
+      "days_in_submitted_30d": 6.4,
       "leader": "Natalie Boyce",
       "active_by_stage": {
-        "Hired": 3,
+        "Hired": 2,
         "Interview": 4,
-        "Recruiter Screen": 19,
-        "Round 1 PDX": 19,
-        "Round 2 PDX": 4,
-        "Submitted": 1242,
+        "Recruiter Screen PDX": 28,
+        "Round 1 PDX": 18,
+        "Round 2 PDX": 3,
+        "Submitted": 1221,
         "Offer": 3
       },
       "submitted_30d": 391,
       "submitted_90d": 1146,
       "offers_30d": 6,
-      "candidates_past_submitted": 52
+      "candidates_past_submitted": 58
     },
     "Christina Moubarak": {
-      "open_reqs": 21.0,
+      "open_reqs": 18.0,
       "active_candidates": 159.0,
-      "screens_30d": 111.0,
-      "screen_to_hire_30d": 4.5,
+      "screens_30d": 113.0,
+      "screen_to_hire_30d": 4.4,
       "closed_openings_90d": 29.0,
       "ttf_median_90d": 166.0,
       "ttf_mean_90d": 409.5,
@@ -39266,26 +39294,25 @@ const DATA = {
       "unique_profiles": 9,
       "hm_count": 12,
       "closing_soon": 1,
-      "new_7d": 1,
-      "days_in_submitted_90d": 11.5,
-      "days_in_submitted_30d": 3.5,
+      "new_7d": 0,
+      "days_in_submitted_90d": 11.8,
+      "days_in_submitted_30d": 3.4,
       "leader": "Jared Schiller",
       "active_by_stage": {
-        "Hired": 5,
-        "Interview": 27,
-        "Recruiter Screen": 140,
-        "Round 1 PDX": 58,
+        "Hired": 3,
+        "Interview": 29,
+        "Recruiter Screen": 136,
+        "Round 1 PDX": 59,
         "Round 2 PDX": 3,
-        "Submitted": 2024,
-        "Offer": 1
+        "Submitted": 2029
       },
       "submitted_30d": 1193,
       "submitted_90d": 1770,
       "offers_30d": 5,
-      "candidates_past_submitted": 234
+      "candidates_past_submitted": 230
     },
     "Kori Cude": {
-      "open_reqs": 3.0,
+      "open_reqs": 5.0,
       "active_candidates": 218.0,
       "screens_30d": 8.0,
       "screen_to_hire_30d": 12.5,
@@ -39298,17 +39325,17 @@ const DATA = {
       "reqs_at_offer": 0,
       "hires_7d": 0,
       "hires_30d": 1,
-      "hires_90d": 11,
+      "hires_90d": 10,
       "unique_profiles": 9,
       "hm_count": 8,
       "closing_soon": 0,
-      "new_7d": 0,
-      "days_in_submitted_90d": 8.7,
+      "new_7d": 3,
+      "days_in_submitted_90d": 9.0,
       "days_in_submitted_30d": 12.5,
       "leader": "Jeff Arnold",
       "active_by_stage": {
         "Recruiter Screen PDX": 7,
-        "Submitted": 39
+        "Submitted": 52
       },
       "submitted_30d": 142,
       "submitted_90d": 1035,
@@ -39316,10 +39343,10 @@ const DATA = {
       "candidates_past_submitted": 7
     },
     "Mallory Loken": {
-      "open_reqs": 11.0,
+      "open_reqs": 8.0,
       "active_candidates": 540.0,
-      "screens_30d": 47.0,
-      "screen_to_hire_30d": 14.9,
+      "screens_30d": 49.0,
+      "screen_to_hire_30d": 14.3,
       "closed_openings_90d": 15.0,
       "ttf_median_90d": 272.0,
       "ttf_mean_90d": 707.5,
@@ -39334,98 +39361,97 @@ const DATA = {
       "hm_count": 7,
       "closing_soon": 0,
       "new_7d": 0,
-      "days_in_submitted_90d": 20.2,
-      "days_in_submitted_30d": 10.3,
+      "days_in_submitted_90d": 20.1,
+      "days_in_submitted_30d": 11.8,
       "leader": "Jeff Arnold",
       "active_by_stage": {
-        "Hired": 4,
-        "Interview": 3,
-        "Recruiter Screen": 66,
-        "Submitted": 2592
+        "Hired": 2,
+        "Interview": 2,
+        "Recruiter Screen": 46,
+        "Submitted": 1516
       },
       "submitted_30d": 959,
       "submitted_90d": 2781,
       "offers_30d": 4,
-      "candidates_past_submitted": 73
+      "candidates_past_submitted": 50
     },
     "Tyler Kulbacki": {
-      "open_reqs": 17.0,
+      "open_reqs": 16.0,
       "active_candidates": 629.0,
-      "screens_30d": 53.0,
-      "screen_to_hire_30d": 13.2,
+      "screens_30d": 58.0,
+      "screen_to_hire_30d": 13.8,
       "closed_openings_90d": 42.0,
       "ttf_median_90d": 174.5,
       "ttf_mean_90d": 686.5,
       "tto_pre_days": 6.8,
       "tto_active_days": 12.6,
       "evergreen_reqs": 0,
-      "reqs_at_offer": 1,
+      "reqs_at_offer": 3,
       "hires_7d": 3,
-      "hires_30d": 7,
-      "hires_90d": 27,
+      "hires_30d": 8,
+      "hires_90d": 26,
       "unique_profiles": 14,
       "hm_count": 12,
       "closing_soon": 4,
-      "new_7d": 0,
-      "days_in_submitted_90d": 6.3,
-      "days_in_submitted_30d": 1.7,
+      "new_7d": 1,
+      "days_in_submitted_90d": 6.2,
+      "days_in_submitted_30d": 2.4,
       "leader": "Natalie Boyce",
       "active_by_stage": {
-        "Hired": 5,
+        "Hired": 4,
         "Interview": 1,
-        "Recruiter Screen": 32,
-        "Round 1 PDX": 35,
-        "Round 2 PDX": 8,
+        "Recruiter Screen": 36,
+        "Round 1 PDX": 34,
+        "Round 2 PDX": 7,
         "Round 3 PDX": 3,
-        "Submitted": 1507,
-        "Offer": 1
+        "Submitted": 1463,
+        "Offer": 3
       },
       "submitted_30d": 725,
       "submitted_90d": 1530,
-      "offers_30d": 6,
-      "candidates_past_submitted": 85
+      "offers_30d": 9,
+      "candidates_past_submitted": 88
     },
     "Tasha Turner": {
-      "open_reqs": 14.0,
+      "open_reqs": 13.0,
       "active_candidates": 25.0,
-      "screens_30d": 58.0,
-      "screen_to_hire_30d": 10.3,
+      "screens_30d": 78.0,
+      "screen_to_hire_30d": 14.1,
       "closed_openings_90d": 25.0,
       "ttf_median_90d": 586.0,
       "ttf_mean_90d": 736.1,
       "tto_pre_days": 5.2,
       "tto_active_days": 12.8,
       "evergreen_reqs": 0,
-      "reqs_at_offer": 5,
-      "hires_7d": 0,
-      "hires_30d": 6,
-      "hires_90d": 16,
+      "reqs_at_offer": 0,
+      "hires_7d": 5,
+      "hires_30d": 11,
+      "hires_90d": 21,
       "unique_profiles": 5,
       "hm_count": 8,
-      "closing_soon": 5,
+      "closing_soon": 0,
       "new_7d": 3,
-      "days_in_submitted_90d": 3.7,
-      "days_in_submitted_30d": 2.4,
+      "days_in_submitted_90d": 3.5,
+      "days_in_submitted_30d": 2.2,
       "leader": "Jared Schiller",
       "active_by_stage": {
-        "Hired": 2,
+        "Hired": 6,
         "Interview": 22,
-        "Recruiter Screen": 68,
-        "Round 1 PDX": 5,
+        "Recruiter Screen": 82,
+        "Round 1 PDX": 11,
         "Round 2 PDX": 3,
-        "Submitted": 636,
-        "Offer": 5
+        "Submitted": 649
       },
       "submitted_30d": 239,
       "submitted_90d": 590,
       "offers_30d": 8,
-      "candidates_past_submitted": 105
+      "candidates_past_submitted": 124
     },
     "Brittney Stewart": {
       "open_reqs": 16.0,
       "active_candidates": 834.0,
-      "screens_30d": 39.0,
-      "screen_to_hire_30d": 28.2,
+      "screens_30d": 41.0,
+      "screen_to_hire_30d": 26.8,
       "closed_openings_90d": 35.0,
       "ttf_median_90d": 348.0,
       "ttf_mean_90d": 769.8,
@@ -39433,33 +39459,33 @@ const DATA = {
       "tto_active_days": 13.7,
       "evergreen_reqs": 0,
       "reqs_at_offer": 0,
-      "hires_7d": 4,
+      "hires_7d": 3,
       "hires_30d": 11,
-      "hires_90d": 23,
+      "hires_90d": 21,
       "unique_profiles": 13,
       "hm_count": 14,
       "closing_soon": 1,
-      "new_7d": 1,
-      "days_in_submitted_90d": 6.8,
-      "days_in_submitted_30d": 3.9,
+      "new_7d": 3,
+      "days_in_submitted_90d": 6.7,
+      "days_in_submitted_30d": 4.0,
       "leader": "Natalie Boyce",
       "active_by_stage": {
-        "Hired": 7,
-        "Interview": 14,
-        "Recruiter Screen": 46,
-        "Round 1 PDX": 25,
+        "Hired": 6,
+        "Interview": 13,
+        "Recruiter Screen": 43,
+        "Round 1 PDX": 22,
         "Round 2 PDX": 1,
         "Round 3 PDX": 2,
-        "Submitted": 2152,
+        "Submitted": 2010,
         "Offer": 1
       },
       "submitted_30d": 1491,
       "submitted_90d": 3364,
       "offers_30d": 10,
-      "candidates_past_submitted": 96
+      "candidates_past_submitted": 88
     },
     "Lee Threatt": {
-      "open_reqs": 12.0,
+      "open_reqs": 10.0,
       "active_candidates": 93.0,
       "screens_30d": 14.0,
       "screen_to_hire_30d": 71.4,
@@ -39470,30 +39496,30 @@ const DATA = {
       "tto_active_days": 8.1,
       "evergreen_reqs": 0,
       "reqs_at_offer": 0,
-      "hires_7d": 1,
+      "hires_7d": 0,
       "hires_30d": 10,
-      "hires_90d": 20,
+      "hires_90d": 19,
       "unique_profiles": 8,
       "hm_count": 8,
       "closing_soon": 0,
       "new_7d": 0,
-      "days_in_submitted_90d": 12.0,
+      "days_in_submitted_90d": 11.9,
       "days_in_submitted_30d": 6.3,
       "leader": "Jared Schiller",
       "active_by_stage": {
-        "Hired": 5,
-        "Interview": 19,
-        "Recruiter Screen": 9,
+        "Hired": 2,
+        "Interview": 15,
+        "Recruiter Screen": 8,
         "Round 1 PDX": 2,
-        "Submitted": 411
+        "Submitted": 390
       },
       "submitted_30d": 115,
       "submitted_90d": 469,
       "offers_30d": 8,
-      "candidates_past_submitted": 35
+      "candidates_past_submitted": 27
     },
     "Jennie Barron": {
-      "open_reqs": 4.0,
+      "open_reqs": 3.0,
       "active_candidates": 356.0,
       "screens_30d": 20.0,
       "screen_to_hire_30d": 20.0,
@@ -39511,61 +39537,61 @@ const DATA = {
       "hm_count": 9,
       "closing_soon": 1,
       "new_7d": 0,
-      "days_in_submitted_90d": 3.1,
-      "days_in_submitted_30d": 2.3,
+      "days_in_submitted_90d": 3.2,
+      "days_in_submitted_30d": 1.8,
       "leader": "Mike Dent",
       "active_by_stage": {
-        "Hired": 2,
+        "Hired": 1,
         "Interview": 4,
-        "Recruiter Screen": 17,
+        "Recruiter Screen": 14,
         "Round 1 PDX": 1,
         "Round 2 PDX": 3,
-        "Submitted": 300
+        "Submitted": 289
       },
       "submitted_30d": 249,
       "submitted_90d": 1099,
       "offers_30d": 2,
-      "candidates_past_submitted": 27
+      "candidates_past_submitted": 23
     },
     "Stephanie Anderson": {
       "open_reqs": 9.0,
       "active_candidates": 40.0,
-      "screens_30d": 14.0,
-      "screen_to_hire_30d": 7.1,
+      "screens_30d": 18.0,
+      "screen_to_hire_30d": 5.6,
       "closed_openings_90d": 39.0,
       "ttf_median_90d": 195.0,
       "ttf_mean_90d": 390.4,
       "tto_pre_days": 4.7,
       "tto_active_days": 14.8,
       "evergreen_reqs": 0,
-      "reqs_at_offer": 0,
+      "reqs_at_offer": 1,
       "hires_7d": 1,
       "hires_30d": 1,
-      "hires_90d": 14,
+      "hires_90d": 13,
       "unique_profiles": 7,
       "hm_count": 9,
-      "closing_soon": 0,
+      "closing_soon": 1,
       "new_7d": 0,
-      "days_in_submitted_90d": 7.3,
-      "days_in_submitted_30d": 5.4,
+      "days_in_submitted_90d": 8.4,
+      "days_in_submitted_30d": 8.5,
       "leader": "Jeff Arnold",
       "active_by_stage": {
         "Hired": 1,
-        "Interview": 20,
-        "Recruiter Screen": 8,
-        "Submitted": 384,
-        "Offer": 1
+        "Interview": 19,
+        "Recruiter Screen": 12,
+        "Submitted": 397,
+        "Offer": 2
       },
       "submitted_30d": 128,
       "submitted_90d": 830,
-      "offers_30d": 2,
-      "candidates_past_submitted": 30
+      "offers_30d": 3,
+      "candidates_past_submitted": 34
     },
     "Jaida Simone": {
-      "open_reqs": 14.0,
+      "open_reqs": 15.0,
       "active_candidates": 49.0,
-      "screens_30d": 41.0,
-      "screen_to_hire_30d": 2.4,
+      "screens_30d": 42.0,
+      "screen_to_hire_30d": 4.8,
       "closed_openings_90d": 38.0,
       "ttf_median_90d": 110.0,
       "ttf_mean_90d": 463.5,
@@ -39573,32 +39599,32 @@ const DATA = {
       "tto_active_days": 12.5,
       "evergreen_reqs": 1,
       "reqs_at_offer": 0,
-      "hires_7d": 0,
-      "hires_30d": 1,
+      "hires_7d": 1,
+      "hires_30d": 2,
       "hires_90d": 19,
       "unique_profiles": 3,
       "hm_count": 7,
       "closing_soon": 0,
-      "new_7d": 3,
+      "new_7d": 2,
       "days_in_submitted_90d": 4.3,
       "days_in_submitted_30d": 2.5,
       "leader": "Jared Schiller",
       "active_by_stage": {
-        "Hired": 1,
+        "Hired": 2,
         "Interview": 8,
         "Recruiter Screen": 36,
-        "Submitted": 426
+        "Submitted": 427
       },
       "submitted_30d": 235,
       "submitted_90d": 946,
-      "offers_30d": 1,
-      "candidates_past_submitted": 45
+      "offers_30d": 2,
+      "candidates_past_submitted": 46
     },
     "Vidhi Bhadiyadra": {
       "open_reqs": 13.0,
       "active_candidates": 501.0,
-      "screens_30d": 53.0,
-      "screen_to_hire_30d": 7.5,
+      "screens_30d": 59.0,
+      "screen_to_hire_30d": 6.8,
       "closed_openings_90d": null,
       "ttf_median_90d": null,
       "ttf_mean_90d": null,
@@ -39611,59 +39637,59 @@ const DATA = {
       "hires_90d": 8,
       "unique_profiles": 5,
       "hm_count": 5,
-      "closing_soon": 3,
-      "new_7d": 0,
-      "days_in_submitted_90d": 4.5,
+      "closing_soon": 2,
+      "new_7d": 1,
+      "days_in_submitted_90d": 4.4,
       "days_in_submitted_30d": 2.8,
       "leader": "Seth Davis",
       "active_by_stage": {
         "Hired": 1,
-        "Recruiter Screen": 42,
-        "Round 1 PDX": 17,
-        "Round 2 PDX": 11,
-        "Round 3 PDX": 5,
-        "Submitted": 6725,
+        "Interview": 2,
+        "Recruiter Screen": 40,
+        "Round 1 PDX": 14,
+        "Round 2 PDX": 9,
+        "Round 3 PDX": 6,
+        "Submitted": 6610,
         "Offer": 1
       },
       "submitted_30d": 3215,
       "submitted_90d": 7664,
       "offers_30d": 5,
-      "candidates_past_submitted": 77
+      "candidates_past_submitted": 73
     },
     "Brad Chatwin": {
-      "open_reqs": 11.0,
+      "open_reqs": 10.0,
       "active_candidates": 267.0,
-      "screens_30d": 33.0,
-      "screen_to_hire_30d": 12.1,
+      "screens_30d": 38.0,
+      "screen_to_hire_30d": 10.5,
       "closed_openings_90d": 28.0,
       "ttf_median_90d": 235.0,
       "ttf_mean_90d": 722.1,
       "tto_pre_days": 5.8,
       "tto_active_days": 11.1,
       "evergreen_reqs": 0,
-      "reqs_at_offer": 0,
+      "reqs_at_offer": 1,
       "hires_7d": 1,
       "hires_30d": 4,
-      "hires_90d": 15,
+      "hires_90d": 14,
       "unique_profiles": 8,
       "hm_count": 7,
       "closing_soon": 3,
       "new_7d": 2,
-      "days_in_submitted_90d": 5.3,
-      "days_in_submitted_30d": 3.4,
+      "days_in_submitted_90d": 5.5,
+      "days_in_submitted_30d": 4.7,
       "leader": "Mike Dent",
       "active_by_stage": {
-        "Hired": 2,
-        "Recruiter Screen": 35,
-        "Round 1 PDX": 1,
-        "Round 2 PDX": 12,
-        "Submitted": 426,
-        "Offer": 3
+        "Hired": 1,
+        "Recruiter Screen": 33,
+        "Round 2 PDX": 11,
+        "Submitted": 381,
+        "Offer": 4
       },
       "submitted_30d": 311,
       "submitted_90d": 1007,
-      "offers_30d": 3,
-      "candidates_past_submitted": 53
+      "offers_30d": 4,
+      "candidates_past_submitted": 49
     },
     "Natalie Boyce": {
       "open_reqs": 5.0,
@@ -39730,46 +39756,46 @@ const DATA = {
       "offers_30d": 0
     },
     "Emily Braby": {
-      "open_reqs": 17.0,
+      "open_reqs": 15.0,
       "active_candidates": null,
-      "screens_30d": 43.0,
-      "screen_to_hire_30d": 9.3,
+      "screens_30d": 50.0,
+      "screen_to_hire_30d": 8.0,
       "closed_openings_90d": null,
       "ttf_median_90d": null,
       "ttf_mean_90d": null,
       "tto_pre_days": null,
       "tto_active_days": null,
       "evergreen_reqs": 0,
-      "reqs_at_offer": 0,
+      "reqs_at_offer": 1,
       "hires_7d": 2,
       "hires_30d": 4,
       "hires_90d": 4,
       "unique_profiles": 6,
       "hm_count": 4,
       "closing_soon": 5,
-      "new_7d": 2,
-      "days_in_submitted_90d": 6.3,
-      "days_in_submitted_30d": 4.6,
+      "new_7d": 1,
+      "days_in_submitted_90d": 6.5,
+      "days_in_submitted_30d": 5.4,
       "leader": "Seth Davis",
       "active_by_stage": {
-        "Hired": 4,
-        "Interview": 6,
-        "Recruiter Screen": 18,
-        "Round 1 PDX": 17,
+        "Hired": 2,
+        "Interview": 4,
+        "Recruiter Screen": 20,
+        "Round 1 PDX": 18,
         "Round 2 PDX": 8,
         "Round 3 PDX": 1,
-        "Submitted": 3740,
-        "Offer": 1
+        "Submitted": 3893,
+        "Offer": 2
       },
       "submitted_30d": null,
       "submitted_90d": null,
-      "offers_30d": 5,
+      "offers_30d": 6,
       "candidates_past_submitted": 55
     },
     "Melissa LeVitre": {
       "open_reqs": 10.0,
       "active_candidates": null,
-      "screens_30d": 47.0,
+      "screens_30d": 49.0,
       "screen_to_hire_30d": 0.0,
       "closed_openings_90d": null,
       "ttf_median_90d": null,
@@ -39783,28 +39809,28 @@ const DATA = {
       "hires_90d": 0,
       "unique_profiles": null,
       "hm_count": null,
-      "closing_soon": 5,
-      "new_7d": 2,
+      "closing_soon": 7,
+      "new_7d": 1,
       "days_in_submitted_90d": 12.6,
       "days_in_submitted_30d": 6.3,
       "leader": "Seth Davis",
       "active_by_stage": {
-        "Recruiter Screen PDX": 16,
-        "Round 1 PDX": 27,
-        "Round 2 PDX": 14,
+        "Recruiter Screen PDX": 15,
+        "Round 1 PDX": 25,
+        "Round 2 PDX": 19,
         "Round 3 PDX": 5,
-        "Submitted": 2747
+        "Submitted": 2810
       },
       "submitted_30d": null,
       "submitted_90d": null,
       "offers_30d": 0,
-      "candidates_past_submitted": 62
+      "candidates_past_submitted": 64
     },
     "September Buttorff": {
-      "open_reqs": 3.0,
+      "open_reqs": 5.0,
       "active_candidates": null,
-      "screens_30d": 10.0,
-      "screen_to_hire_30d": 0.0,
+      "screens_30d": 14.0,
+      "screen_to_hire_30d": 7.1,
       "closed_openings_90d": null,
       "ttf_median_90d": null,
       "ttf_mean_90d": null,
@@ -39813,23 +39839,26 @@ const DATA = {
       "evergreen_reqs": 0,
       "reqs_at_offer": 0,
       "hires_7d": 0,
-      "hires_30d": 0,
-      "hires_90d": 0,
+      "hires_30d": 1,
+      "hires_90d": 1,
       "unique_profiles": null,
       "hm_count": null,
       "closing_soon": 0,
-      "new_7d": 2,
-      "days_in_submitted_90d": 1.0,
+      "new_7d": 1,
+      "days_in_submitted_90d": 2.1,
       "days_in_submitted_30d": 1.0,
       "leader": "Seth Davis",
       "active_by_stage": {
-        "Recruiter Screen PDX": 10,
-        "Submitted": 132
+        "Hired": 1,
+        "Recruiter Screen PDX": 11,
+        "Round 1 PDX": 4,
+        "Round 2 PDX": 1,
+        "Submitted": 316
       },
       "submitted_30d": null,
       "submitted_90d": null,
-      "offers_30d": 0,
-      "candidates_past_submitted": 10
+      "offers_30d": 1,
+      "candidates_past_submitted": 17
     }
   },
   "hiring_managers": {
