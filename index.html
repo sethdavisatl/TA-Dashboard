@@ -1604,7 +1604,18 @@ drawSrc();
     sendBtn=document.getElementById('chatSend');
   let history=[];
   let dataStr=null;
-  function getDataStr(){ if(!dataStr) dataStr=JSON.stringify(DATA); return dataStr; }
+  function getDataStr(){
+    if(!dataStr){
+      // Trimmed copy for the assistant: drop per-requisition Workday rows, the hiring manager time to offer table and the schema changelog. Keeps the payload near 40K tokens.
+      const t=Object.assign({},DATA.trailing);
+      ['workday_time_to_offer','workday_time_to_hire'].forEach(k=>{
+        if(t[k]){ const c=Object.assign({},t[k]); delete c.detail; delete c.by_hiring_manager; t[k]=c; }
+      });
+      const m=Object.assign({},DATA.meta); delete m.schema_note;
+      dataStr=JSON.stringify(Object.assign({},DATA,{trailing:t,meta:m}));
+    }
+    return dataStr;
+  }
 
   fab.onclick=()=>{panel.classList.add('on');input.focus();};
   closeBtn.onclick=()=>panel.classList.remove('on');
@@ -1650,18 +1661,14 @@ drawSrc();
       const system = "You are a compact data assistant embedded in a WGU TA operations dashboard. "+
         "Answer ONLY from the JSON export below, no outside knowledge, no speculation about people or numbers not present. "+
         "When asked who works on, owns, or has openings for a given role or job profile, look up live.job_profile_recruiters.lookup, keyed by exact Workday job profile name, and name the actual recruiters and their open req counts, don't just report an aggregate total. "+
+        "Per-requisition Workday detail and the hiring manager time to offer table are not included in this export; say so if asked. "+
         "If the answer isn't in the data, say so plainly and suggest which tab might have it if relevant. "+
         "Be terse: a sentence or a short list, no filler, no restating the question. Never invent a number. "+
         "Figures are as of "+DATA.meta.data_as_of+".\n\nDATA_JSON:\n"+getDataStr();
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      const resp = await fetch('/api/chat', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-          model:'claude-sonnet-4-6',
-          max_tokens:600,
-          system: system,
-          messages: history
-        })
+        body: JSON.stringify({ system: system, messages: history })
       });
       const json = await resp.json();
       typing.remove();
